@@ -12,6 +12,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SelectionSort", "SelectionS
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Maze", "Maze\Maze.csproj", "{A4367A54-1EE3-486E-9580-2E0D93E506AA}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SudokuSolver", "SudokuSolver\SudokuSolver.csproj", "{B68217B5-C02A-43DD-B37C-A776AF724388}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -42,5 +44,9 @@ Global
 		{A4367A54-1EE3-486E-9580-2E0D93E506AA}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{A4367A54-1EE3-486E-9580-2E0D93E506AA}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{A4367A54-1EE3-486E-9580-2E0D93E506AA}.Release|Any CPU.Build.0 = Release|Any CPU
+		{B68217B5-C02A-43DD-B37C-A776AF724388}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{B68217B5-C02A-43DD-B37C-A776AF724388}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{B68217B5-C02A-43DD-B37C-A776AF724388}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{B68217B5-C02A-43DD-B37C-A776AF724388}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 EndGlobal

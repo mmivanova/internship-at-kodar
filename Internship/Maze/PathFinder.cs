@@ -6,7 +6,7 @@ namespace Maze
     public static class PathFinder
     {
         private static bool _pathExists;
-        private static Stack<int> Path { get; } = new() { };
+        private static Stack<int> Path { get; } = new();
         private static Tile StartTile => Connections.GetTile(1);
         private static Tile EndTile => Connections.GetTile(25);
 

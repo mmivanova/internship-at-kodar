@@ -23,7 +23,7 @@ namespace BinarySearch
                 return -1;
             }
 
-            var middle = (int) Math.Ceiling((decimal) ((start + end) / 2));
+            var middle = CalculateMiddle(start, end);
 
             while (start != end)
             {
@@ -31,13 +31,13 @@ namespace BinarySearch
                 {
                     case 1:
                         end = middle - 1;
-                        middle = UpdateMiddle(start, end);
+                        middle = CalculateMiddle(start, end);
                         break;
                     case 0:
                         return middle;
                     default:
                         start = middle + 1;
-                        middle = UpdateMiddle(start, end);
+                        middle = CalculateMiddle(start, end);
                         break;
                 }
             }
@@ -75,7 +75,7 @@ namespace BinarySearch
                 : BinarySearchRecursion<T>(list, target, middle + 1, end);
         }
 
-        private static int UpdateMiddle(int start, int end)
+        private static int CalculateMiddle(int start, int end)
         {
             return (int) Math.Ceiling((decimal) ((start + end) / 2.0));
         }

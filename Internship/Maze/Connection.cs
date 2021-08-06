@@ -1,9 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Reflection.Metadata;
 
 namespace Maze
 {
-    public static class Connections
+    public class Connection
     {
         //    |------------------------|
         //    |  1 |  2    3    4    5 |
@@ -17,7 +18,14 @@ namespace Maze
         //    | 21 | 22   23 | 24  25  |
         //    |------------------------|
 
-        private static List<Tile> GetAllTiles()
+        private List<Tile> Connections { get; }
+
+        public Connection()
+        {
+            Connections = SeedConnections();
+        }
+        
+        private static List<Tile> SeedConnections()
         {
             var tiles = new List<Tile>
             {
@@ -51,22 +59,16 @@ namespace Maze
             return tiles;
         }
 
-        public static List<int> GetConnectionsByTile(int number)
+        public List<int> GetConnectionsByTile(int number)
         {
             var tile = GetTile(number);
             if (tile != null) return tile.Connections;
             throw new ArgumentException("Invalid tile number");
         }
 
-        public static Tile GetTile(int number)
+        public Tile GetTile(int number)
         {
-            return GetAllTiles().Find(t => t.Number.Equals(number));
-        }
-
-        private static int GetLastConnection(int number)
-        {
-            var connections = GetConnectionsByTile(number);
-            return connections[^1];
+            return Connections.Find(t => t.Number.Equals(number));
         }
     }
 }

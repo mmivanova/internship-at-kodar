@@ -3,24 +3,29 @@ using System.Collections.Generic;
 
 namespace Maze
 {
-    public static class PathFinder
+    public class PathFinder
     {
-        private static bool _pathExists;
-        private static Stack<int> Path { get; } = new();
-        private static Tile StartTile => Connections.GetTile(1);
-        private static Tile EndTile => Connections.GetTile(25);
+        private const int StartTileNumber = 1;
+        private const int EndTileNumber = 25;
+        
+        private bool _pathExists;
+        private readonly Connection _connection = new();
+        private Stack<int> Path { get; } = new();
+        private Tile StartTile => _connection.GetTile(StartTileNumber);
+        private Tile EndTile => _connection.GetTile(EndTileNumber);
 
-        public static IEnumerable<int> FindPath()
+
+        public IEnumerable<int> FindPath()
         {
             return PathExists(StartTile.Number)
                 ? Path
                 : throw new Exception("No path is found!");
         }
 
-        private static bool PathExists(int tileNumber)
+        private bool PathExists(int tileNumber)
         {
-            var tile = Connections.GetTile(tileNumber);
-            var connectionsPerTile = Connections.GetConnectionsByTile(tile.Number).Count;
+            var tile = _connection.GetTile(tileNumber);
+            var connectionsPerTile = _connection.GetConnectionsByTile(tile.Number).Count;
 
             _pathExists = IsEndTile(tile.Number);
 
@@ -36,7 +41,7 @@ namespace Maze
             return _pathExists;
         }
 
-        private static void AddTileToPath(int currentTileNumber)
+        private void AddTileToPath(int currentTileNumber)
         {
             if (_pathExists)
             {
@@ -44,14 +49,14 @@ namespace Maze
             }
         }
 
-        private static bool IsEndTile(int currentTileNumber)
+        private bool IsEndTile(int currentTileNumber)
         {
             return currentTileNumber.Equals(EndTile.Number);
         }
 
-        private static bool IsDeadEnd(Tile currentTile, int index)
+        private bool IsDeadEnd(Tile currentTile, int index)
         {
-            return Connections.GetConnectionsByTile(currentTile.Connections[index]).Count == 0 &&
+            return _connection.GetConnectionsByTile(currentTile.Connections[index]).Count == 0 &&
                    currentTile.Connections[index] != EndTile.Number;
         }
     }

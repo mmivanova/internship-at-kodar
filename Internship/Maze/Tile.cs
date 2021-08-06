@@ -14,12 +14,6 @@ namespace Maze
             Connections = ValidateConnections(connections);
         }
 
-        public Tile(int number)
-        {
-            Number = number;
-            Connections = Maze.Connections.GetConnectionsByTile(Number);
-        }
-
         private static List<int> ValidateConnections(List<int> connections)
         {
             if (connections.Count > 4)

@@ -4,9 +4,10 @@ namespace Maze
 {
     internal static class Program
     {
-        private static void Main(string[] args)
+        private static void Main()
         {
-            Console.WriteLine(string.Join(", ", PathFinder.FindPath()));
+            var pathFinder = new PathFinder();
+            Console.WriteLine(string.Join(", ", pathFinder.FindPath()));
         }
     }
 }

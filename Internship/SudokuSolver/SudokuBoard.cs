@@ -19,17 +19,7 @@ namespace SudokuSolver
         {
             return Board[row, cell];
         }
-
-        public int Get(Position position)
-        {
-            return Board[position.Row, position.Column];
-        }
-
-        public void Set(int row, int column, int value)
-        {
-            Board[row, column] = value;
-        }
-
+        
         public void Set(Position position, int value)
         {
             position.Number = value;
@@ -38,10 +28,21 @@ namespace SudokuSolver
 
         public bool ContainsZero()
         {
-            return Board.Cast<int>().Any(cell => cell.Equals(0));
+            for (var r = 0; r < Row; r++)
+            {
+                for (var c = 0; c < Column; c++)
+                {
+                    if (Board[r, c] == 0)
+                    {
+                        return true;
+                    }
+                }
+            }
+
+            return false;
         }
 
-        public IEnumerable<int> GetRow(int rowNumber)
+        public List<int> GetRow(int rowNumber)
         {
             var row = new List<int> { };
 
@@ -50,7 +51,7 @@ namespace SudokuSolver
                 row.Add(Board[rowNumber, col]);
             }
 
-            return row.ToArray();
+            return row;
         }
 
         public IEnumerable<int> GetColumn(int columnNumber)
@@ -65,37 +66,20 @@ namespace SudokuSolver
             return col.ToArray();
         }
 
-        public int[,] GetThreeByThreeArea(int row, int column)
+        public List<int> GetAllAvailableNumbersForCell(Position position)
         {
-            var threeByThreeArea = new int[3, 3];
-
-            var tempr = 0;
-
-            for (var r = row - 3; r < row; r++)
+            var numbers = new List<int>();
+            for (var i = 1; i <= 9; i++)
             {
-                var tempcol = 0;
-                for (var col = column - 3; col < column; col++)
+                if (GetRow(position.Row).Contains(i) || GetColumn(position.Column).Contains(i)) 
                 {
-                    threeByThreeArea[tempr, tempcol] = Board[r, col];
-                    tempcol++;
+                    continue;
                 }
 
-                tempr++;
+                numbers.Add(i);
             }
 
-            return threeByThreeArea;
-        }
-
-        public int GetNextAvailableNumber(int row, int column)
-        {
-            var num = 1;
-
-            while (GetRow(row).Contains(num) || GetColumn(column).Contains(num))
-            {
-                num++;
-            }
-
-            return num;
+            return numbers;
         }
     }
 }

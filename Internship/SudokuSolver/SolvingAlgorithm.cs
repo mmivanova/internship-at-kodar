@@ -3,66 +3,58 @@ using static SudokuSolver.Constants;
 
 namespace SudokuSolver
 {
-    public static class SolvingAlgorithm
+    public class SolvingAlgorithm
     {
-        private static readonly Position StartPosition = new(0, 0);
-        private static readonly Position FinalPosition = new(8, 8);
-        private static bool _isSolved;
-
-        public static SudokuBoard SolveSudoku(SudokuBoard board)
+        private bool _isSolved;
+        private static readonly Position StartPosition = Position.GetFirstPosition();
+        private static readonly Position FinalPosition = Position.GetLastPosition();
+        public SudokuBoard SolveSudoku(SudokuBoard board)
         {
-            return (Solver(board, StartPosition))
+            return (IsSolvable(board, StartPosition))
                 ? board
                 : throw new Exception("This sudoku board cannot be solved");
         }
 
-        private static bool Solver(SudokuBoard board, Position position, int number = 1)
+        private bool IsSolvable(SudokuBoard board, Position position)
         {
-            if (!board.ContainsZero())
+            var availableNumbers = board.GetAllAvailableNumbersForCell(position);
+            _isSolved = !board.ContainsZero() && IsFinalPosition(position);
+
+            var nextAvailablePosition = Position.GetNextAvailablePosition(position);
+            
+            for (var num = 0; num < availableNumbers.Count; num++)
             {
-                _isSolved = true;
-            }
+                if (_isSolved) break;
+                var number = availableNumbers[num];
 
-            for (var row = 0; row < Row; row++)
-            {
-                if (_isSolved)
+                if (NextCellCanHoldOnlyCurrentNumber(board, nextAvailablePosition, number)
+                    && !IsFinalPosition(position)
+                    && IsOnTheSameRow(position, nextAvailablePosition)) continue;
+                board.Set(position, number);
+
+                IsSolvable(board, nextAvailablePosition);
+                if (!_isSolved)
                 {
-                    break;
-                }
-
-                for (var col = 0; col < Column; col++)
-                {
-                    if (IsFinalPosition(position))
-                    {
-                        _isSolved = true;
-                        break;
-                    }
-
-                    position.Number = board.Get(row, col);
-                    if (position.Number == SudokuBoard.Initial.Get(row, col) && position.Number is not 0) continue;
-                    number = board.GetNextAvailableNumber(row, col);
-
-                    if (IsValidNumber(number))
-                    {
-                        board.Set(row, col, number);
-                        Solver(board, Position.MoveNextPosition(position), number);
-                    }
-
-                    Solver(board, Position.MoveToPreviousPosition(position), number);
+                    board.Set(position, 0);
                 }
             }
 
             return _isSolved;
         }
 
+        private static bool NextCellCanHoldOnlyCurrentNumber(SudokuBoard board, Position nextAvailablePosition, int num)
+        {
+            return board.GetAllAvailableNumbersForCell(nextAvailablePosition).Count == 1
+                   && board.GetAllAvailableNumbersForCell(nextAvailablePosition)[0] == num;
+        }
+
+        private static bool IsOnTheSameRow(Position position, Position nextPosition)
+        {
+            return position.Row == nextPosition.Row;
+        }
         private static bool IsFinalPosition(Position position)
         {
             return position.Column == FinalPosition.Column && position.Row == FinalPosition.Row;
-        }
-
-        private static bool IsValidNumber(int number)
-        {
-            return number is >= 1 and <= 9;
         }
     }
 }

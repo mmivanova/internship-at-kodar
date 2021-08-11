@@ -5,42 +5,60 @@
         public int Row { get; private set; }
         public int Column { get; private set; }
         public int Number { get; set; }
-        
-        public Position(int row, int column)
+
+        private Position(int row, int column)
         {
             Row = row;
             Column = column;
         }
-        public static Position MoveNextPosition(Position position)
+
+        public static Position GetNextAvailablePosition(Position position)
         {
-            switch (position.Column)
+            var initial = SudokuBoard.Initial;
+            var next = GetNextPosition(position);
+
+            while (initial.Get(next.Row, next.Column) != 0)
+            {
+                next = GetNextPosition(next);
+            }
+
+            return next;
+        }
+
+        private static Position GetNextPosition(Position position)
+        {
+            var pos = new Position(position.Row, position.Column);
+            if (pos.Row == GetLastPosition().Row && pos.Column == GetLastPosition().Column)
+            {
+                return pos;
+            }
+
+            switch (pos.Column)
             {
                 case < 8:
-                    position.Column++;
-                    return position;
-                case 8 when position.Row < 8:
-                    position.Column = 0;
-                    position.Row++;
-                    return position;
+                    pos.Column++;
+                    return pos;
+                case 8 when pos.Row < 8:
+                    pos.Column = 0;
+                    pos.Row++;
+                    return pos;
                 default:
-                    return position;
+                    return pos;
             }
         }
-        
-        public static Position MoveToPreviousPosition(Position position)
+
+        public static Position GetLastPosition()
         {
-            switch (position.Column)
-            {
-                case > 0:
-                    position.Column--;
-                    return position;
-                case 0 when position.Row > 0:
-                    position.Column = 8;
-                    position.Row--;
-                    return position;
-                default:
-                    return position;
-            }
+            var lastPosition = new Position(8, SudokuBoard.Initial.GetRow(8).LastIndexOf(0));
+
+            return lastPosition;
+        }
+
+        public static Position GetFirstPosition()
+        {
+            var firstPosition = new Position(0, SudokuBoard.Initial.GetRow(0).FindIndex(n => n == 0));
+
+            return firstPosition;
         }
     }
 }

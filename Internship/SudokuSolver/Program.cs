@@ -2,7 +2,7 @@
 {
     internal static class Program
     {
-        private static readonly SolvingAlgorithm SolvingAlgorithm = new SolvingAlgorithm();
+        private static readonly SolvingAlgorithm SolvingAlgorithm = new();
 
         private static void Main()
         {

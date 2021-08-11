@@ -27,19 +27,29 @@ namespace SudokuSolver
                 if (_isSolved) break;
                 var number = availableNumbers[num];
 
-                if (NextCellCanHoldOnlyCurrentNumber(board, nextAvailablePosition, number)
-                    && !IsFinalPosition(position)
-                    && IsOnTheSameRow(position, nextAvailablePosition)) continue;
+                if (IsNotValidNumber(board, position, nextAvailablePosition, number)) continue;
                 board.Set(position, number);
 
                 IsSolvable(board, nextAvailablePosition);
-                if (!_isSolved)
-                {
-                    board.Set(position, 0);
-                }
+                SetCurrentPositionToZero(board, position);
             }
 
             return _isSolved;
+        }
+
+        private void SetCurrentPositionToZero(SudokuBoard board, Position position)
+        {
+            if (!_isSolved)
+            {
+                board.Set(position, 0);
+            }
+        }
+
+        private static bool IsNotValidNumber(SudokuBoard board, Position position, Position nextPosition, int number)
+        {
+            return NextCellCanHoldOnlyCurrentNumber(board, nextPosition, number)
+                   && !IsFinalPosition(position)
+                   && IsOnTheSameRow(position, nextPosition);
         }
 
         private static bool NextCellCanHoldOnlyCurrentNumber(SudokuBoard board, Position nextAvailablePosition, int num)

@@ -19,7 +19,7 @@ namespace SudokuSolver
         {
             return Board[row, cell];
         }
-        
+
         public void Set(Position position, int value)
         {
             position.Number = value;
@@ -71,12 +71,64 @@ namespace SudokuSolver
             var numbers = new List<int>();
             for (var i = 1; i <= 9; i++)
             {
-                if (GetRow(position.Row).Contains(i) || GetColumn(position.Column).Contains(i)) 
-                {
-                    continue;
-                }
+                if (IsUnavailableNumber(position, i)) continue;
 
                 numbers.Add(i);
+            }
+
+            return numbers;
+        }
+
+        private bool IsUnavailableNumber(Position position, int i)
+        {
+            return GetRow(position.Row).Contains(i)
+                   || GetColumn(position.Column).Contains(i)
+                   || IsPresentInSmallSquare(position, i);
+        }
+
+        private static int GetIndexOfSquareRow(int row)
+        {
+            var squareRow = row switch
+            {
+                >= 3 and <= 5 => 3,
+                >= 6 and <= 8 => 6,
+                _ => 0
+            };
+
+            return squareRow;
+        }
+
+        private static int GetIndexOfSquareColumn(int column)
+        {
+            var squareColumn = column switch
+            {
+                >= 3 and <= 5 => 3,
+                >= 6 and <= 8 => 6,
+                _ => 0
+            };
+
+            return squareColumn;
+        }
+
+        private static bool IsPresentInSmallSquare(Position position, int number)
+        {
+            var numbers = GetSquareNumbers(position);
+
+            return numbers.Contains(number);
+        }
+
+        private static List<int> GetSquareNumbers(Position position)
+        {
+            var numbers = new List<int>();
+            for (var row = GetIndexOfSquareRow(position.Row); row < 3; row++)
+            {
+                for (var col = GetIndexOfSquareColumn(position.Column); col < 3; col++)
+                {
+                    if (Initial.Get(row, col) != 0)
+                    {
+                        numbers.Add(Initial.Get(row, col));
+                    }
+                }
             }
 
             return numbers;

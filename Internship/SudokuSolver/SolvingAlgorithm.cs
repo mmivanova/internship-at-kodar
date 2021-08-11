@@ -1,5 +1,4 @@
 ﻿using System;
-using static SudokuSolver.Constants;
 
 namespace SudokuSolver
 {
@@ -8,6 +7,7 @@ namespace SudokuSolver
         private bool _isSolved;
         private static readonly Position StartPosition = Position.GetFirstPosition();
         private static readonly Position FinalPosition = Position.GetLastPosition();
+
         public SudokuBoard SolveSudoku(SudokuBoard board)
         {
             return (IsSolvable(board, StartPosition))
@@ -21,7 +21,7 @@ namespace SudokuSolver
             _isSolved = !board.ContainsZero() && IsFinalPosition(position);
 
             var nextAvailablePosition = Position.GetNextAvailablePosition(position);
-            
+
             for (var num = 0; num < availableNumbers.Count; num++)
             {
                 if (_isSolved) break;
@@ -52,6 +52,7 @@ namespace SudokuSolver
         {
             return position.Row == nextPosition.Row;
         }
+
         private static bool IsFinalPosition(Position position)
         {
             return position.Column == FinalPosition.Column && position.Row == FinalPosition.Row;

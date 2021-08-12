@@ -8,6 +8,8 @@ namespace SudokuSolver
     {
         public static SudokuBoard Initial { get; set; }
         private int[,] Board { get; }
+        
+         
 
         public SudokuBoard(int[,] board)
         {
@@ -54,7 +56,7 @@ namespace SudokuSolver
             return row;
         }
 
-        public IEnumerable<int> GetColumn(int columnNumber)
+        private IEnumerable<int> GetColumn(int columnNumber)
         {
             var col = new List<int> { };
 
@@ -110,23 +112,25 @@ namespace SudokuSolver
             return squareColumn;
         }
 
-        private static bool IsPresentInSmallSquare(Position position, int number)
+        private bool IsPresentInSmallSquare(Position position, int number)
         {
             var numbers = GetSquareNumbers(position);
 
             return numbers.Contains(number);
         }
 
-        private static List<int> GetSquareNumbers(Position position)
+        private List<int> GetSquareNumbers(Position position)
         {
             var numbers = new List<int>();
-            for (var row = GetIndexOfSquareRow(position.Row); row < 3; row++)
+            for (var row = GetIndexOfSquareRow(position.Row); row < GetIndexOfSquareRow(position.Row) + 3; row++)
             {
-                for (var col = GetIndexOfSquareColumn(position.Column); col < 3; col++)
+                for (var col = GetIndexOfSquareColumn(position.Column);
+                    col < GetIndexOfSquareColumn(position.Column) + 3;
+                    col++)
                 {
-                    if (Initial.Get(row, col) != 0)
+                    if (Board[row, col] != 0)
                     {
-                        numbers.Add(Initial.Get(row, col));
+                        numbers.Add(Board[row, col]);
                     }
                 }
             }

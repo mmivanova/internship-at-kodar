@@ -4,9 +4,9 @@ using static SudokuSolver.Constants;
 
 namespace SudokuSolver
 {
-    public static class ArrayUtils
+    public class ArrayUtils
     {
-        public static SudokuBoard ReadArray()
+        public SudokuBoard ReadArray()
         {
             var board = new int[Row, Column];
 
@@ -46,7 +46,7 @@ namespace SudokuSolver
             }
         }
         
-        public static void PrintArray(int[,] board)
+        public void PrintArray(int[,] board)
         {
             for (var i = 0; i < 3; i++)
             {

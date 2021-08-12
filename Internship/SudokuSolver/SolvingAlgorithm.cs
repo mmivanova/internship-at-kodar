@@ -5,8 +5,8 @@ namespace SudokuSolver
     public class SolvingAlgorithm
     {
         private bool _isSolved;
-        private static readonly Position StartPosition = Position.GetFirstPosition();
-        private static readonly Position FinalPosition = Position.GetLastPosition();
+        private static readonly Position StartPosition = Position.StartPosition;
+        private static readonly Position LastPosition = Position.LastPosition;
 
         public SudokuBoard SolveSudoku(SudokuBoard board)
         {
@@ -19,7 +19,7 @@ namespace SudokuSolver
         {
             var availableNumbers = board.GetAllAvailableNumbersForCell(position);
             _isSolved = !board.ContainsZero() && IsFinalPosition(position);
-
+            
             var nextAvailablePosition = Position.GetNextAvailablePosition(position);
 
             for (var num = 0; num < availableNumbers.Count; num++)
@@ -65,7 +65,7 @@ namespace SudokuSolver
 
         private static bool IsFinalPosition(Position position)
         {
-            return position.Column == FinalPosition.Column && position.Row == FinalPosition.Row;
+            return position.Column == LastPosition.Column && position.Row == LastPosition.Row;
         }
     }
 }

@@ -1,4 +1,6 @@
-﻿namespace SudokuSolver
+﻿using System.Reflection.Metadata;
+
+namespace SudokuSolver
 {
     public class Position
     {
@@ -6,7 +8,10 @@
         public int Column { get; private set; }
         public int Number { get; set; }
 
-        private Position(int row, int column)
+        public static readonly Position StartPosition = new(0, SudokuBoard.Initial.GetRow(0).FindIndex(n => n == 0));
+        public static readonly Position LastPosition = new(Constants.Row - 1, SudokuBoard.Initial.GetRow(8).LastIndexOf(0) );
+
+        public Position(int row, int column)
         {
             Row = row;
             Column = column;
@@ -15,8 +20,8 @@
         public static Position GetNextAvailablePosition(Position position)
         {
             var initial = SudokuBoard.Initial;
-            var next = GetNextPosition(position);
 
+            var next = GetNextPosition(position);
             while (initial.Get(next.Row, next.Column) != 0)
             {
                 next = GetNextPosition(next);
@@ -28,9 +33,9 @@
         private static Position GetNextPosition(Position position)
         {
             var pos = new Position(position.Row, position.Column);
-            if (pos.Row == GetLastPosition().Row && pos.Column == GetLastPosition().Column)
+            if (position.Row == LastPosition.Row && position.Column == LastPosition.Column)
             {
-                return pos;
+                return position;
             }
 
             switch (pos.Column)
@@ -45,20 +50,6 @@
                 default:
                     return pos;
             }
-        }
-
-        public static Position GetLastPosition()
-        {
-            var lastPosition = new Position(8, SudokuBoard.Initial.GetRow(8).LastIndexOf(0));
-
-            return lastPosition;
-        }
-
-        public static Position GetFirstPosition()
-        {
-            var firstPosition = new Position(0, SudokuBoard.Initial.GetRow(0).FindIndex(n => n == 0));
-
-            return firstPosition;
         }
     }
 }

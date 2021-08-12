@@ -3,6 +3,7 @@
     internal static class Program
     {
         private static readonly SolvingAlgorithm SolvingAlgorithm = new();
+        private static readonly ArrayUtils ArrayUtils = new();
 
         private static void Main()
         {

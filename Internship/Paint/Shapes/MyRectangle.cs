@@ -6,9 +6,9 @@ namespace Paint.Shapes
     public class MyRectangle : Shape
     {
         private Point End { get; }
-        private Point Middle { get; }
+        public Point Middle { get; }
 
-        public MyRectangle(Point middle)
+        private MyRectangle(Point middle)
         {
             Middle = middle;
             Start = GetRandomStartPoint();
@@ -31,6 +31,17 @@ namespace Paint.Shapes
             var y1 = random.Next(Middle.Y - 100, Middle.Y - 50);
             var start = new Point(x1, y1);
             return start;
+        }
+
+        public static MyRectangle GetMyRectangle(Point middle)
+        {
+            var rect = new MyRectangle(middle);
+            return rect;
+        }
+
+        public override void Draw(Graphics graphics)
+        {
+            graphics.DrawRectangle(new Pen(Color.White, 1.0f), Start.X, Start.Y, Width, Height);
         }
     }
 }

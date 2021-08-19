@@ -50,6 +50,7 @@
             this.mainPanel.Size = new System.Drawing.Size(1920, 1080);
             this.mainPanel.TabIndex = 0;
             this.mainPanel.Click += new System.EventHandler(this.mainPanel_Click);
+            this.mainPanel.Paint += new System.Windows.Forms.PaintEventHandler(this.mainPanel_Paint);
             this.mainPanel.MouseDown += new System.Windows.Forms.MouseEventHandler(this.mainPanel_MouseDown);
             // 
             // menu

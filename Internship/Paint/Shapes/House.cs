@@ -2,16 +2,23 @@
 
 namespace Paint.Shapes
 {
-    public static class House
+    public class House : Shape
     {
-        public static void DrawHouse(Graphics graphics, Point mouseLocation)
-        {
-            var myRect = new MyRectangle(mouseLocation);
-            graphics.DrawRectangle(new Pen(Color.White, 1.0f), myRect.Start.X, myRect.Start.Y, myRect.Width,
-                myRect.Height);
+        private Point Middle { get; }
+        private MyRectangle Rectangle { get; }
+        private MyTriangle Roof { get; }
 
-            var triangle = new MyTriangle(myRect.Start, myRect.Width, mouseLocation.Y - myRect.Height);
-            graphics.DrawPolygon(new Pen(Color.White, 1.0f), MyTriangle.GetTrianglePoints(triangle));
+        public House(Point mouseLocation)
+        {
+            Middle = mouseLocation;
+            Rectangle = MyRectangle.GetMyRectangle(Middle);
+            Roof = MyTriangle.GetMyTriangle(Rectangle);
+        }
+        
+        public override void Draw(Graphics graphics)
+        {
+            Rectangle.Draw(graphics);
+            Roof.Draw(graphics);
         }
     }
 }

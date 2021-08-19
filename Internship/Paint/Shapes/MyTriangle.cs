@@ -4,11 +4,11 @@ namespace Paint.Shapes
 {
     public class MyTriangle : Shape
     {
-        public MyTriangle(Point start, int width, int height)
+        private MyTriangle(MyRectangle rect)
         {
-            Start = start;
-            Width = width;
-            Height = height;
+            Start = rect.Start;
+            Width = rect.Width;
+            Height = rect.Middle.Y - rect.Height;
         }
 
         private Point GetApex()
@@ -19,7 +19,7 @@ namespace Paint.Shapes
             return new Point(x, y);
         }
 
-        public static Point[] GetTrianglePoints(MyTriangle triangle)
+        private static Point[] GetTrianglePoints(MyTriangle triangle)
         {
             var endPoint = new Point(triangle.Start.X + triangle.Width, triangle.Start.Y);
             var points = new[]
@@ -28,6 +28,17 @@ namespace Paint.Shapes
             };
 
             return points;
+        }
+
+        public static MyTriangle GetMyTriangle(MyRectangle rect)
+        {
+            var triangle = new MyTriangle(rect);
+            return triangle;
+        }
+
+        public override void Draw(Graphics graphics)
+        {
+            graphics.DrawPolygon(new Pen(Color.White, 1.0f), GetTrianglePoints(this));
         }
     }
 }

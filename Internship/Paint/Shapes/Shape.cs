@@ -7,5 +7,7 @@ namespace Paint.Shapes
         public Point Start { get; protected set; }
         public int Width { get; protected set; }
         public int Height { get; protected set; }
+
+        public abstract void Draw(Graphics graphics);
     }
 }

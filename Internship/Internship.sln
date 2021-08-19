@@ -1,18 +1,23 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BinarySearch", "BinarySearch\BinarySearch.csproj", "{0490C543-1DA3-453C-AA10-BD75977891CD}"
+# Visual Studio Version 16
+VisualStudioVersion = 16.0.31605.320
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "BinarySearch", "BinarySearch\BinarySearch.csproj", "{0490C543-1DA3-453C-AA10-BD75977891CD}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CustomLINQ", "CustomLINQ\CustomLINQ.csproj", "{63F6E031-58AF-4CDA-BF94-C93A9C1B9F95}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CustomLINQ", "CustomLINQ\CustomLINQ.csproj", "{63F6E031-58AF-4CDA-BF94-C93A9C1B9F95}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CustomList", "CustomList\CustomList.csproj", "{60761599-25A5-42AE-B98F-1491286BA1B5}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CustomList", "CustomList\CustomList.csproj", "{60761599-25A5-42AE-B98F-1491286BA1B5}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CustomListTests", "CustomListTests\CustomListTests.csproj", "{F04B539A-EB93-4E52-98A0-2163C756FA24}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CustomListTests", "CustomListTests\CustomListTests.csproj", "{F04B539A-EB93-4E52-98A0-2163C756FA24}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SelectionSort", "SelectionSort\SelectionSort.csproj", "{1198FF7D-8BF2-4FBE-9410-8623F88D97B3}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SelectionSort", "SelectionSort\SelectionSort.csproj", "{1198FF7D-8BF2-4FBE-9410-8623F88D97B3}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Maze", "Maze\Maze.csproj", "{A4367A54-1EE3-486E-9580-2E0D93E506AA}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Maze", "Maze\Maze.csproj", "{A4367A54-1EE3-486E-9580-2E0D93E506AA}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SudokuSolver", "SudokuSolver\SudokuSolver.csproj", "{B68217B5-C02A-43DD-B37C-A776AF724388}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SudokuSolver", "SudokuSolver\SudokuSolver.csproj", "{B68217B5-C02A-43DD-B37C-A776AF724388}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Paint", "Paint\Paint.csproj", "{3488063B-432D-4785-AF68-E0872C1B4698}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -48,5 +53,15 @@ Global
 		{B68217B5-C02A-43DD-B37C-A776AF724388}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{B68217B5-C02A-43DD-B37C-A776AF724388}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{B68217B5-C02A-43DD-B37C-A776AF724388}.Release|Any CPU.Build.0 = Release|Any CPU
+		{3488063B-432D-4785-AF68-E0872C1B4698}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{3488063B-432D-4785-AF68-E0872C1B4698}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{3488063B-432D-4785-AF68-E0872C1B4698}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{3488063B-432D-4785-AF68-E0872C1B4698}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {0885D010-065B-406A-9B29-99DAD6A3EAF0}
 	EndGlobalSection
 EndGlobal

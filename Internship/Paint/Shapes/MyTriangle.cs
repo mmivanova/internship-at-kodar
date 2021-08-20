@@ -1,15 +1,22 @@
-﻿using System.Drawing;
+﻿using System;
+using System.Drawing;
 
 namespace Paint.Shapes
 {
+    [Serializable]
     public class MyTriangle : Shape
     {
+        public MyTriangle()
+        {
+        }
+
         private MyTriangle(MyRectangle rect)
         {
             Start = rect.Start;
             Width = rect.Width;
             Height = rect.Middle.Y - rect.Height;
         }
+
 
         private Point GetApex()
         {
@@ -19,7 +26,7 @@ namespace Paint.Shapes
             return new Point(x, y);
         }
 
-        private static Point[] GetTrianglePoints(MyTriangle triangle)
+        internal static Point[] GetTrianglePoints(MyTriangle triangle)
         {
             var endPoint = new Point(triangle.Start.X + triangle.Width, triangle.Start.Y);
             var points = new[]

@@ -3,10 +3,14 @@ using System.Drawing;
 
 namespace Paint.Shapes
 {
+    [Serializable]
     public class MyRectangle : Shape
     {
-        private Point End { get; }
-        public Point Middle { get; }
+        public Point End { get; set; }
+
+        public MyRectangle()
+        {
+        }
 
         private MyRectangle(Point middle)
         {

@@ -17,7 +17,6 @@ namespace Paint.Shapes
             Height = rect.Middle.Y - rect.Height;
         }
 
-
         private Point GetApex()
         {
             var x = Start.X + (Width / 2);

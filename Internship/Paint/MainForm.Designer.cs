@@ -33,9 +33,8 @@
             this.menu = new System.Windows.Forms.MenuStrip();
             this.fileToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.saveToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.saveBinaryToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.loadToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.loadBinaryToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.clearToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.mainPanel.SuspendLayout();
             this.menu.SuspendLayout();
             this.SuspendLayout();
@@ -65,7 +64,7 @@
             // 
             // fileToolStripMenuItem
             // 
-            this.fileToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {this.saveToolStripMenuItem, this.saveBinaryToolStripMenuItem, this.loadToolStripMenuItem, this.loadBinaryToolStripMenuItem});
+            this.fileToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {this.saveToolStripMenuItem, this.loadToolStripMenuItem, this.clearToolStripMenuItem});
             this.fileToolStripMenuItem.Name = "fileToolStripMenuItem";
             this.fileToolStripMenuItem.Size = new System.Drawing.Size(37, 20);
             this.fileToolStripMenuItem.Text = "File";
@@ -77,12 +76,6 @@
             this.saveToolStripMenuItem.Text = "Save";
             this.saveToolStripMenuItem.Click += new System.EventHandler(this.saveToolStripMenuItem_Click);
             // 
-            // saveBinaryToolStripMenuItem
-            // 
-            this.saveBinaryToolStripMenuItem.Name = "saveBinaryToolStripMenuItem";
-            this.saveBinaryToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
-            this.saveBinaryToolStripMenuItem.Text = "Save binary";
-            // 
             // loadToolStripMenuItem
             // 
             this.loadToolStripMenuItem.Name = "loadToolStripMenuItem";
@@ -90,11 +83,12 @@
             this.loadToolStripMenuItem.Text = "Load";
             this.loadToolStripMenuItem.Click += new System.EventHandler(this.loadToolStripMenuItem_Click);
             // 
-            // loadBinaryToolStripMenuItem
+            // clearToolStripMenuItem
             // 
-            this.loadBinaryToolStripMenuItem.Name = "loadBinaryToolStripMenuItem";
-            this.loadBinaryToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
-            this.loadBinaryToolStripMenuItem.Text = "Load binary";
+            this.clearToolStripMenuItem.Name = "clearToolStripMenuItem";
+            this.clearToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
+            this.clearToolStripMenuItem.Text = "Binary ";
+            this.clearToolStripMenuItem.Click += new System.EventHandler(this.clearToolStripMenuItem_Click);
             // 
             // MainForm
             // 
@@ -113,12 +107,12 @@
             this.ResumeLayout(false);
         }
 
+        private System.Windows.Forms.ToolStripMenuItem clearToolStripMenuItem;
+
         private System.Windows.Forms.MenuStrip menu;
         private System.Windows.Forms.ToolStripMenuItem fileToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem saveToolStripMenuItem;
-        private System.Windows.Forms.ToolStripMenuItem saveBinaryToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem loadToolStripMenuItem;
-        private System.Windows.Forms.ToolStripMenuItem loadBinaryToolStripMenuItem;
 
 
         private System.Windows.Forms.Panel mainPanel;

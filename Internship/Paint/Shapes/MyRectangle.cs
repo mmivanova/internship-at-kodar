@@ -21,6 +21,15 @@ namespace Paint.Shapes
             Height = End.Y - Start.Y;
         }
 
+        public MyRectangle(Point start, Point middle)
+        {
+            Start = start;
+            Middle = middle;
+            End = CalculateEndPoint();
+            Width = End.X - Start.X;
+            Height = End.Y - Start.Y;
+        }
+
         private Point CalculateEndPoint()
         {
             var x = 2 * Middle.X - Start.X;
@@ -40,6 +49,12 @@ namespace Paint.Shapes
         public static MyRectangle GetMyRectangle(Point middle)
         {
             var rect = new MyRectangle(middle);
+            return rect;
+        }
+
+        public static MyRectangle GetMyRectangle(Point start, Point middle)
+        {
+            var rect = new MyRectangle(start, middle);
             return rect;
         }
 

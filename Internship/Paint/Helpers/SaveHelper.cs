@@ -21,7 +21,7 @@ namespace Paint.Helpers
                 return;
 
             var path = FileHelper.GetFilePath(fileName);
-            var fileStream = new FileStream(path, FileMode.OpenOrCreate);
+            using var fileStream = new FileStream(path, FileMode.OpenOrCreate);
 
             if (saveFileDialog.FileName.EndsWith(".xml"))
             {
@@ -32,8 +32,6 @@ namespace Paint.Helpers
             {
                 House.Serialize(fileStream, houses);
             }
-
-            fileStream.Close();
         }
     }
 }

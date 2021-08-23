@@ -23,7 +23,7 @@ namespace Paint.Helpers
                 return new List<House>();
 
             var path = FileHelper.GetFilePath(fileName);
-            var fileStream = new FileStream(path, FileMode.Open);
+            using var fileStream = new FileStream(path, FileMode.Open);
 
             if (openFileDialog.FileName.EndsWith(".xml"))
             {
@@ -35,7 +35,6 @@ namespace Paint.Helpers
                 houses = House.Deserialize(fileStream);
             }
 
-            fileStream.Close();
             return houses;
         }
     }

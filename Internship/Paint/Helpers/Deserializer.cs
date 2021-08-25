@@ -13,11 +13,11 @@ namespace Paint.Helpers
         public static List<House> Deserialize(FileDialog openFileDialog, FileStream fileStream)
         {
             List<House> houses;
-            if (openFileDialog.FileName.EndsWith(Constants.JsonExtension))
+            if (openFileDialog.FileName.EndsWith(Extension.Json))
             {
                 houses = DeserializeJson(fileStream);
             }
-            else if (openFileDialog.FileName.EndsWith(Constants.XmlExtension))
+            else if (openFileDialog.FileName.EndsWith(Extension.Xml))
             {
                 houses = DeserializeXml(fileStream);
             }

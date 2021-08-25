@@ -5,6 +5,9 @@ namespace Paint.Helpers
 {
     public static class FileHelper
     {
+        private const string JsonXmlAndBinaryFileFilter =
+            "Json file (*.json)| *.json|XML file (*.xml)| *.xml|Binary file (*.bin)| *.bin";
+
         public static bool IsEmptyFileName(string fileName)
         {
             return fileName == string.Empty;
@@ -15,10 +18,10 @@ namespace Paint.Helpers
             return Path.GetFullPath(fileName);
         }
 
-        public static FileDialog ConfigureFileDialog(string action)
+        public static FileDialog ConfigureFileDialog(Action action)
         {
             FileDialog fileDialog;
-            if (action.Equals(Constants.SaveAction))
+            if (action.Equals(Action.Save))
             {
                 fileDialog = new SaveFileDialog();
             }
@@ -27,7 +30,7 @@ namespace Paint.Helpers
                 fileDialog = new OpenFileDialog();
             }
 
-            fileDialog.Filter = Constants.JsonXmlAndBinaryFileFilter;
+            fileDialog.Filter = JsonXmlAndBinaryFileFilter;
             fileDialog.ShowDialog();
 
             return fileDialog;

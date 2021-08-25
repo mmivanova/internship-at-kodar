@@ -8,7 +8,7 @@ namespace Paint.Helpers
     {
         public static List<House> LoadFile()
         {
-            var fileDialog = FileHelper.ConfigureFileDialog(Constants.LoadAction);
+            var fileDialog = FileHelper.ConfigureFileDialog(Action.Load);
             var fileName = fileDialog.FileName;
 
             if (FileHelper.IsEmptyFileName(fileName))

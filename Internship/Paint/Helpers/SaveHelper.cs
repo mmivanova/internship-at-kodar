@@ -8,7 +8,7 @@ namespace Paint.Helpers
     {
         public static void SaveFile(List<House> houses)
         {
-            var fileDialog = FileHelper.ConfigureFileDialog(Constants.SaveAction);
+            var fileDialog = FileHelper.ConfigureFileDialog(Action.Save);
             var fileName = fileDialog.FileName;
 
             if (FileHelper.IsEmptyFileName(fileName))

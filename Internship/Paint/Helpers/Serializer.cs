@@ -10,11 +10,11 @@ namespace Paint.Helpers
     {
         public static void Serialize(List<House> houses, FileDialog saveFileDialog, FileStream fileStream)
         {
-            if (saveFileDialog.FileName.EndsWith(Constants.JsonExtension))
+            if (saveFileDialog.FileName.EndsWith(Extension.Json))
             {
                 SerializeJson(fileStream, houses);
             }
-            else if (saveFileDialog.FileName.EndsWith(Constants.XmlExtension))
+            else if (saveFileDialog.FileName.EndsWith(Extension.Xml))
             {
                 SerializeXml(fileStream, houses);
             }

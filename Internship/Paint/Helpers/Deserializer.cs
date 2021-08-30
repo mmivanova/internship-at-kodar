@@ -10,21 +10,16 @@ namespace Paint.Helpers
 {
     public static class Deserializer
     {
-        public static List<House> Deserialize(FileDialog openFileDialog, FileStream fileStream)
+        public static List<House> Deserialize(FileDialog fileDialog, FileStream fileStream)
         {
-            List<House> houses;
-            if (openFileDialog.FileName.EndsWith(Extension.Json))
+            var fileInfo = new FileInfo(fileDialog.FileName);
+
+            var houses = fileInfo.Extension switch
             {
-                houses = DeserializeJson(fileStream);
-            }
-            else if (openFileDialog.FileName.EndsWith(Extension.Xml))
-            {
-                houses = DeserializeXml(fileStream);
-            }
-            else
-            {
-                houses = DeserializeBinary(fileStream);
-            }
+                Extension.Json => DeserializeJson(fileStream),
+                Extension.Xml => DeserializeXml(fileStream),
+                _ => DeserializeBinary(fileStream)
+            };
 
             return houses;
         }

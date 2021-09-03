@@ -8,19 +8,21 @@ namespace Paint.Helpers
 {
     public static class Serializer
     {
-        public static void Serialize(List<House> houses, FileDialog saveFileDialog, FileStream fileStream)
+        public static void Serialize(List<House> houses, FileDialog fileDialog, FileStream fileStream)
         {
-            if (saveFileDialog.FileName.EndsWith(Extension.Json))
+            var fileInfo = new FileInfo(fileDialog.FileName);
+
+            switch (fileInfo.Extension)
             {
-                SerializeJson(fileStream, houses);
-            }
-            else if (saveFileDialog.FileName.EndsWith(Extension.Xml))
-            {
-                SerializeXml(fileStream, houses);
-            }
-            else
-            {
-                SerializeBinary(fileStream, houses);
+                case Extension.Json:
+                    SerializeJson(fileStream, houses);
+                    break;
+                case Extension.Xml:
+                    SerializeXml(fileStream, houses);
+                    break;
+                default:
+                    SerializeBinary(fileStream, houses);
+                    break;
             }
         }
 

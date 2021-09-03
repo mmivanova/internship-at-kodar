@@ -11,8 +11,13 @@ namespace Paint.Shapes
         public Point Start { get; set; }
         public Point Middle { get; set; }
 
-        [XmlIgnore] [JsonIgnore] public int Width { get; set; }
-        [XmlIgnore] [JsonIgnore] public int Height { get; set; }
+        [XmlIgnore]
+        [JsonIgnore]
+        public int Width { get; set; }
+
+        [XmlIgnore] 
+        [JsonIgnore]
+        public int Height { get; set; }
 
         public abstract void Draw(Graphics graphics);
     }

@@ -8,9 +8,13 @@ namespace Paint.Shapes
     [Serializable]
     public class House : Shape
     {
-        [XmlIgnore] [JsonIgnore] public MyRectangle Rectangle { get; set; }
+        [XmlIgnore]
+        [JsonIgnore] 
+        public MyRectangle Rectangle { get; set; }
 
-        [XmlIgnore] [JsonIgnore] public MyTriangle Roof { get; set; }
+        [XmlIgnore]
+        [JsonIgnore] 
+        public MyTriangle Roof { get; set; }
 
         public House()
         {

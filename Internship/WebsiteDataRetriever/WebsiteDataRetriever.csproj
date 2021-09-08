@@ -107,6 +107,7 @@
         <Reference Include="System.Xml" />
     </ItemGroup>
     <ItemGroup>
+        <Compile Include="Data\Website.cs" />
         <Compile Include="Helpers\Executor.cs" />
         <Compile Include="MainForm.cs">
             <SubType>Form</SubType>

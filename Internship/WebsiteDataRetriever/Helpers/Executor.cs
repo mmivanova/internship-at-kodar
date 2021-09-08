@@ -4,115 +4,95 @@ using System.Linq;
 using System.Net;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using WebsiteDataRetriever.Data;
 
 namespace WebsiteDataRetriever.Helpers
 {
     public static class Executor
     {
         private const int ValuePerWebsite = 100 / 12;
-
-        private static readonly List<string> Websites = new()
-        {
-            "https://www.google.com",
-            "https://www.microsoft.com",
-            "https://www.cnn.com",
-            "https://www.amazon.com",
-            "https://www.facebook.com",
-            "https://www.twitter.com",
-            "https://www.codeproject.com",
-            "https://www.stackoverflow.com",
-            "https://en.wikipedia.org/wiki/.NET_Framework",
-            "https://nakov.com",
-            "https://elmah.io",
-            "https://www.pluralsight.com",
-            "https://www.udemy.com"
-        };
+        private static readonly List<string> WebsiteUrls = Website.GetWebsiteUrls();
 
         public static string ExecuteParallel(ProgressBar progressBar)
         {
             var result = string.Empty;
-            Parallel.ForEach(Websites, website =>
+
+            Parallel.ForEach(WebsiteUrls, websiteUrl =>
             {
-                var characters = DownloadWebsite(website);
+                var website = DownloadWebsite(websiteUrl);
                 progressBar.Increment(ValuePerWebsite);
-                result += $@"{website} downloaded: {characters.Length} characters long" + Environment.NewLine;
+                result += $@"{website.WebsiteUrl} downloaded: {website.WebsiteData.Length} characters long" +
+                          Environment.NewLine;
             });
 
             return result;
         }
 
-        public static string ExecuteNormal(ProgressBar progressBar)
+        public static string ExecuteNormal(ProgressBar progressBar, TextBox textBox)
         {
-            var result = string.Empty;
-            foreach (var website in Websites)
+            textBox.Text = string.Empty;
+            foreach (var websiteUrl in WebsiteUrls)
             {
-                var characters = DownloadWebsite(website);
+                var website = DownloadWebsite(websiteUrl);
                 progressBar.Increment(ValuePerWebsite);
-                result += $@"{website} downloaded: {characters.Length} characters long" + Environment.NewLine;
+                textBox.Text += $@"{websiteUrl} downloaded: {website.WebsiteData.Length} characters long" +
+                                Environment.NewLine;
             }
 
-            return result;
+            return textBox.Text;
         }
 
-        public static async Task<string> ExecuteAsync(ProgressBar progressBar)
+        public static async Task<string> ExecuteAsync(ProgressBar progressBar, TextBox textBox)
         {
-            var result = string.Empty;
-            foreach (var website in Websites)
+            textBox.Text = string.Empty;
+            var tasks = WebsiteUrls
+                .Select(DownloadWebsiteAsync)
+                .ToList();
+
+            for (var i = 0; i < WebsiteUrls.Count; i++)
             {
-                var data = await GetWebsiteDataAsync(website);
+                var website = await Task.WhenAny(tasks);
                 progressBar.Increment(ValuePerWebsite);
-                result += $@"{website} downloaded: {data.Length} characters long" + Environment.NewLine;
+                textBox.Text +=
+                    $@"{website.Result.WebsiteUrl} downloaded: {website.Result.WebsiteData.Length} characters long" +
+                    Environment.NewLine;
+                tasks.Remove(website);
             }
-            
-            return result;
+
+            return textBox.Text;
         }
 
         public static async Task<string> ExecuteParallelAsync(ProgressBar progressBar)
         {
-            // var data = Task.Run((() =>
-            // {
-            //     var result = string.Empty;
-            //     Parallel.ForEach(Websites,  website =>
-            //     {
-            //         var data = GetWebsiteData(website);
-            //         progressBar.Increment(ValuePerWebsite);
-            //         result += $@"{website} downloaded: {data.Result.Length} characters long" + Environment.NewLine;
-            //     });
-            //     return result;
-            // }));
-            //
             var result = string.Empty;
-            Parallel.ForEach(Websites, async website =>
+
+            await Task.Run(() =>
             {
-                var data = await GetWebsiteDataAsync(website);
-                progressBar.Increment(ValuePerWebsite);
-                result += $@"{website} downloaded: {data.Length} characters long" + Environment.NewLine;
+                Parallel.ForEach(WebsiteUrls, websiteUrl =>
+                {
+                    var website = DownloadWebsite(websiteUrl);
+                    progressBar.Increment(ValuePerWebsite);
+                    result += $@"{website.WebsiteUrl} downloaded: {website.WebsiteData.Length} characters long" +
+                              Environment.NewLine;
+                });
             });
-            
-            // var result = string.Empty;
-            // foreach (var website in Websites.AsParallel())
-            // {
-            //     var data = await GetWebsiteData(website);
-            //     progressBar.Increment(ValuePerWebsite);
-            //     result += $@"{website} downloaded: {data.Length} characters long" + Environment.NewLine;
-            // }
 
             return result;
         }
-        
-        private static Task<string> GetWebsiteDataAsync(string website)
+
+        private static async Task<Website> DownloadWebsiteAsync(string website)
         {
-            return Task.Run(() =>
+            return await Task.Run(() =>
             {
                 var data = DownloadWebsite(website);
                 return data;
             });
         }
 
-        private static string DownloadWebsite(string websiteUrl)
+        private static Website DownloadWebsite(string websiteUrl)
         {
             var webClient = new WebClient();
-            var result = webClient.DownloadString(websiteUrl);
+            var result = new Website(websiteUrl, webClient.DownloadString(websiteUrl));
             return result;
         }
     }

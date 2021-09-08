@@ -19,7 +19,7 @@ namespace WebsiteDataRetriever
             ResetTextBoxAndProgressBar();
 
             _watch.Start();
-            tbDisplay.Text = Executor.ExecuteNormal(pbLoader, tbDisplay);
+            tbDisplay.Text = Executor.ExecuteNormal(pbLoader);
             _watch.Stop();
 
             tbDisplay.Text += $@"Total execution time: {_watch.ElapsedMilliseconds}ms";
@@ -41,7 +41,7 @@ namespace WebsiteDataRetriever
             ResetTextBoxAndProgressBar();
 
             _watch.Start();
-            tbDisplay.Text = await Executor.ExecuteAsync(pbLoader, tbDisplay);
+            tbDisplay.Text = await Executor.ExecuteAsync(pbLoader);
             _watch.Stop();
 
             tbDisplay.Text += $@"Total execution time: {_watch.ElapsedMilliseconds}ms";

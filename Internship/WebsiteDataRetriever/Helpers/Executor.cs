@@ -16,35 +16,31 @@ namespace WebsiteDataRetriever.Helpers
         public static string ExecuteParallel(ProgressBar progressBar)
         {
             var result = string.Empty;
-
             Parallel.ForEach(WebsiteUrls, websiteUrl =>
             {
                 var website = DownloadWebsite(websiteUrl);
                 progressBar.Increment(ValuePerWebsite);
-                result += $@"{website.WebsiteUrl} downloaded: {website.WebsiteData.Length} characters long" +
-                          Environment.NewLine;
+                WriteWebsiteData(website, ref result);
             });
 
             return result;
         }
 
-        public static string ExecuteNormal(ProgressBar progressBar, TextBox textBox)
+        public static string ExecuteNormal(ProgressBar progressBar)
         {
-            textBox.Text = string.Empty;
-            foreach (var websiteUrl in WebsiteUrls)
+            var result = string.Empty;
+            foreach (var website in WebsiteUrls.Select(DownloadWebsite))
             {
-                var website = DownloadWebsite(websiteUrl);
                 progressBar.Increment(ValuePerWebsite);
-                textBox.Text += $@"{websiteUrl} downloaded: {website.WebsiteData.Length} characters long" +
-                                Environment.NewLine;
+                WriteWebsiteData(website, ref result);
             }
 
-            return textBox.Text;
+            return result;
         }
 
-        public static async Task<string> ExecuteAsync(ProgressBar progressBar, TextBox textBox)
+        public static async Task<string> ExecuteAsync(ProgressBar progressBar)
         {
-            textBox.Text = string.Empty;
+            var result = string.Empty;
             var tasks = WebsiteUrls
                 .Select(DownloadWebsiteAsync)
                 .ToList();
@@ -53,13 +49,11 @@ namespace WebsiteDataRetriever.Helpers
             {
                 var website = await Task.WhenAny(tasks);
                 progressBar.Increment(ValuePerWebsite);
-                textBox.Text +=
-                    $@"{website.Result.WebsiteUrl} downloaded: {website.Result.WebsiteData.Length} characters long" +
-                    Environment.NewLine;
+                WriteWebsiteData(website.Result, ref result);
                 tasks.Remove(website);
             }
-
-            return textBox.Text;
+            
+            return result;
         }
 
         public static async Task<string> ExecuteParallelAsync(ProgressBar progressBar)
@@ -72,8 +66,7 @@ namespace WebsiteDataRetriever.Helpers
                 {
                     var website = DownloadWebsite(websiteUrl);
                     progressBar.Increment(ValuePerWebsite);
-                    result += $@"{website.WebsiteUrl} downloaded: {website.WebsiteData.Length} characters long" +
-                              Environment.NewLine;
+                    WriteWebsiteData(website, ref result);
                 });
             });
 
@@ -87,6 +80,12 @@ namespace WebsiteDataRetriever.Helpers
                 var data = DownloadWebsite(website);
                 return data;
             });
+        }
+
+        private static void WriteWebsiteData(Website website, ref string text)
+        {
+            text +=
+                $@"{website.WebsiteUrl} downloaded: {website.WebsiteData.Length} characters long {Environment.NewLine}";
         }
 
         private static Website DownloadWebsite(string websiteUrl)

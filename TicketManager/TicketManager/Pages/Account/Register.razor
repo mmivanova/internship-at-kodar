@@ -1,109 +1,115 @@
 ﻿@page "/registration"
+@using TicketManager.Data
+@inject NavigationManager _navigationManager; 
 <h3>Registration</h3>
 
+<section class="vh-100" style="background-color: #508bfc;">
+    <div class="container py-5 h-100">
+        <div class="row d-flex justify-content-center align-items-center h-100">
+            <div class="col-15 col-md-10 col-lg-8 col-xl-8">
+                <div class="card shadow-2-strong" style="border-radius: 1rem;">
+                    <div class="card-body p-5 text-center">
 
-<!------ Include the above in your HEAD tag ---------->
+                        <h3 class="mb-5">Sign in</h3>
 
-<div class="container">
-    <div class="row justify-content-center">
-        <div class="col-md-8">
-            <div class="card">
-                <div class="card-header"></div>
-                <div class="card-body">
+                        <EditForm Model="@_appUser" OnValidSubmit="@HandleValidSubmit">
+                            <DataAnnotationsValidator/>
+                            <ValidationSummary/>
 
-                    <form class="form-horizontal" method="post" action="#">
-                        <div class="form-group">
-                            <label for="username" class="cols-sm-2 control-label">Username</label>
-                            <div class="cols-sm-10">
-                                <div class="input-group">
-                                    <span class="input-group-addon">
-                                        <i class="fa fa-users fa" aria-hidden="true"></i>
-                                    </span>
-                                    <input type="text" class="form-control" name="username" id="username" placeholder="Enter your Username"/>
+                            <div class="form-group">
+                                <div class="cols-sm-10">
+                                    <div class="form-outline mb-4">
+                                        Username:
+                                        <InputText type="text" placeholder="Username" @bind-Value="_appAccount.Username"/>
+                                    </div>
                                 </div>
                             </div>
-                        </div>
-                        <div class="form-group">
-                            <label for="password" class="cols-sm-2 control-label">Password</label>
-                            <div class="cols-sm-10">
-                                <div class="input-group">
-                                    <span class="input-group-addon">
-                                        <i class="fa fa-lock fa-lg" aria-hidden="true"></i>
-                                    </span>
-                                    <input type="password" class="form-control" name="password" id="password" placeholder="Enter your Password"/>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="form-group">
-                            <label for="confirm" class="cols-sm-2 control-label">Confirm Password</label>
-                            <div class="cols-sm-10">
-                                <div class="input-group">
-                                    <span class="input-group-addon">
-                                        <i class="fa fa-lock fa-lg" aria-hidden="true"></i>
-                                    </span>
-                                    <input type="password" class="form-control" name="confirm" id="confirm" placeholder="Confirm your Password"/>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="form-group">
-                            <label for="email" class="cols-sm-2 control-label">Your Email</label>
-                            <div class="cols-sm-10">
-                                <div class="input-group">
-                                    <span class="input-group-addon">
-                                        <i class="fa fa-envelope fa" aria-hidden="true"></i>
-                                    </span>
-                                    <input type="text" class="form-control" name="email" id="email" placeholder="Enter your Email"/>
-                                </div>
-                            </div>
-                        </div>
 
-                        <div class="form-group">
-                            <label for="firstName" class="cols-sm-2 control-label">First Name</label>
-                            <div class="cols-sm-10">
-                                <div class="input-group">
-                                    <span class="input-group-addon">
-                                        <i class="fa fa-user fa" aria-hidden="true"></i>
-                                    </span>
-                                    <input type="text" class="form-control" name="name" id="firstName" placeholder="Enter your Name"/>
+                            <div class="form-group">
+                                <div class="cols-sm-10">
+                                    <div class="form-outline mb-4">
+                                        Password:
+                                        <InputText type="password" placeholder="Password" @bind-Value="_appAccount.Password"/>
+                                    </div>
                                 </div>
                             </div>
-                        </div>
-                        <div class="form-group">
-                            <label for="lastName" class="cols-sm-2 control-label">Last Name</label>
-                            <div class="cols-sm-10">
-                                <div class="input-group">
-                                    <span class="input-group-addon">
-                                        <i class="fa fa-user fa" aria-hidden="true"></i>
-                                    </span>
-                                    <input type="text" class="form-control" name="name" id="lastName" placeholder="Enter your Name"/>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="mb-4 pb-2">
-                            <label class="cols-sm-2 control-label">Job title</label>
-                            <select class="form-control">
-                                <option value="1">Junior software developer</option>
-                                <option value="2">Mid-level software developer</option>
-                                <option value="3">Senior software developer</option>
-                                <option value="4">Office manager</option>
-                                <option value="5">Technical manager</option>
-                            </select>
 
-                        </div>
-                        <div class="form-group ">
-                            <button type="button" class="btn btn-primary btn-lg btn-block login-button">Create an account</button>
-                        </div>
-                        <div class="login-register">
-                            <a href="https://localhost:5001/login">Login</a>
-                        </div>
-                    </form>
+                            <div class="form-group">
+                                <div class="cols-sm-10">
+                                    <div class="form-outline mb-4">
+                                        Confirm Password:
+                                        <InputText type="password" placeholder="Password" @bind-Value="_appAccount.Password"/>
+                                    </div>
+                                </div>
+                            </div>
+
+
+                            <div class="form-group">
+                                <div class="cols-sm-10">
+                                    <div class="form-outline mb-4">
+                                        Email:
+                                        <InputText type="email" placeholder="Email" @bind-Value="_appUser.Email"/>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="form-group">
+                                <div class="cols-sm-10">
+                                    <div class="form-outline mb-4">
+                                        First name:
+                                        <InputText type="text" placeholder="First name" @bind-Value="_appUser.FirstName"/>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="form-group">
+                                <div class="cols-sm-10">
+                                    <div class="form-outline mb-4">
+                                        Last name:
+                                        <InputText type="text" placeholder="Last name" @bind-Value="_appUser.LastName"/>
+                                    </div>
+                                </div>
+                            </div>
+
+
+                            <div class="form-group">
+                                <div class="cols-sm-10">
+                                    <div class="form-outline mb-4">
+                                        Job title:
+                                        <InputSelect class="form-control" type="text" placeholder="Job title" @bind-Value="_appUser.JobTitle">
+                                            <option value="">Select classification ...</option>
+                                            <option value="JuniorSoftwareDeveloper">Junior software developer</option>
+                                            <option value="MidLevelSoftwareDeveloper">Mid-level software developer</option>
+                                            <option value="SeniorSoftwareDeveloper">Senior software developer</option>
+                                            <option value="OfficeManager">Office manager</option>
+                                            <option value="TechnicalManager">Technical manager</option>
+                                        </InputSelect>
+                                    </div>
+                                </div>
+                            </div>
+
+
+                            <button class="btn btn-primary btn-lg btn-block" type="submit">Create an account</button>
+
+                            <div>
+                                <p class="mb-0">Already have an account? <NavLink href="/login" class="fw-bold">Sign In</NavLink></p>
+                            </div>
+                        </EditForm>
+                    </div>
                 </div>
-
             </div>
         </div>
     </div>
-</div>
+</section>
 
 @code {
+    private Account _appAccount = new();
+    private AppUser _appUser = new();
+
+
+    private void HandleValidSubmit()
+    {
+        Console.WriteLine("success");
+    }
 
 }

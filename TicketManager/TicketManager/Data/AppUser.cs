@@ -6,9 +6,6 @@ namespace TicketManager.Data
     public class AppUser : IdentityUser
     {
         [Required]
-        public Account Account { get; set; }
-
-        [Required]
         public string FirstName { get; set; }
         
         [Required]

@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Linq;
-using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 using TicketManager.Data;
@@ -15,7 +14,6 @@ namespace TicketManager.Areas.Identity.Data
         }
 
         public DbSet<AppUser> AppUsers { get; set; }
-        public DbSet<Account> Accounts { get; set; }
         public DbSet<Ticket> Tickets { get; set; }
         public DbSet<JobTitle> JobTitles { get; set; }
 
@@ -27,11 +25,7 @@ namespace TicketManager.Areas.Identity.Data
             builder
                 .Entity<AppUser>()
                 .HasKey(pk => pk.Id);
-
-            builder
-                .Entity<Account>()
-                .HasKey(pk => pk.Id);
-
+            
             builder
                 .Entity<Ticket>()
                 .HasKey(pk => pk.Id);

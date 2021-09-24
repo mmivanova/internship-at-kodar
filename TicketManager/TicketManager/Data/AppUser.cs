@@ -7,12 +7,15 @@ namespace TicketManager.Data
     {
         [Required]
         public Account Account { get; set; }
+
         [Required]
         public string FirstName { get; set; }
+        
         [Required]
         public string LastName { get; set; }
-        public JobTitleId JobTitleId { get; set; }
+        
         [Required]
-        public JobTitle JobTitle { get; set; }
+        [EnumDataType(typeof(JobTitleId))]
+        public JobTitleId JobTitleId { get; set; }
     }
 }

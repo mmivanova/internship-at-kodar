@@ -1,5 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using System.Threading.Tasks;
+using TicketManager.Areas.Identity.Data;
 using TicketManager.Data;
 
 namespace TicketManager.Repositories.UserRepository

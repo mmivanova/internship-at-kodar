@@ -1,6 +1,6 @@
 namespace TicketManager.Data
 {
-    public enum JobTitleId : int
+    public enum JobTitleId
     {
         Unknown = 0,
         JuniorSoftwareDeveloper = 1,

@@ -1,10 +1,11 @@
-﻿using Microsoft.AspNetCore.Identity;
+﻿using System;
+using System.Linq;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
-using System;
-using System.Linq;
+using TicketManager.Data;
 
-namespace TicketManager.Data
+namespace TicketManager.Areas.Identity.Data
 {
     public class TicketManagerDbContext : IdentityDbContext<AppUser>
     {

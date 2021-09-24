@@ -1,115 +1,126 @@
-﻿@page "/registration"
-@using TicketManager.Data
-@inject NavigationManager _navigationManager; 
-<h3>Registration</h3>
-
-<section class="vh-100" style="background-color: #508bfc;">
-    <div class="container py-5 h-100">
-        <div class="row d-flex justify-content-center align-items-center h-100">
-            <div class="col-15 col-md-10 col-lg-8 col-xl-8">
-                <div class="card shadow-2-strong" style="border-radius: 1rem;">
-                    <div class="card-body p-5 text-center">
-
-                        <h3 class="mb-5">Sign in</h3>
-
-                        <EditForm Model="@_appUser" OnValidSubmit="@HandleValidSubmit">
-                            <DataAnnotationsValidator/>
-                            <ValidationSummary/>
-
-                            <div class="form-group">
-                                <div class="cols-sm-10">
-                                    <div class="form-outline mb-4">
-                                        Username:
-                                        <InputText type="text" placeholder="Username" @bind-Value="_appAccount.Username"/>
-                                    </div>
-                                </div>
-                            </div>
-
-                            <div class="form-group">
-                                <div class="cols-sm-10">
-                                    <div class="form-outline mb-4">
-                                        Password:
-                                        <InputText type="password" placeholder="Password" @bind-Value="_appAccount.Password"/>
-                                    </div>
-                                </div>
-                            </div>
-
-                            <div class="form-group">
-                                <div class="cols-sm-10">
-                                    <div class="form-outline mb-4">
-                                        Confirm Password:
-                                        <InputText type="password" placeholder="Password" @bind-Value="_appAccount.Password"/>
-                                    </div>
-                                </div>
-                            </div>
-
-
-                            <div class="form-group">
-                                <div class="cols-sm-10">
-                                    <div class="form-outline mb-4">
-                                        Email:
-                                        <InputText type="email" placeholder="Email" @bind-Value="_appUser.Email"/>
-                                    </div>
-                                </div>
-                            </div>
-
-                            <div class="form-group">
-                                <div class="cols-sm-10">
-                                    <div class="form-outline mb-4">
-                                        First name:
-                                        <InputText type="text" placeholder="First name" @bind-Value="_appUser.FirstName"/>
-                                    </div>
-                                </div>
-                            </div>
-
-                            <div class="form-group">
-                                <div class="cols-sm-10">
-                                    <div class="form-outline mb-4">
-                                        Last name:
-                                        <InputText type="text" placeholder="Last name" @bind-Value="_appUser.LastName"/>
-                                    </div>
-                                </div>
-                            </div>
-
-
-                            <div class="form-group">
-                                <div class="cols-sm-10">
-                                    <div class="form-outline mb-4">
-                                        Job title:
-                                        <InputSelect class="form-control" type="text" placeholder="Job title" @bind-Value="_appUser.JobTitle">
-                                            <option value="">Select classification ...</option>
-                                            <option value="JuniorSoftwareDeveloper">Junior software developer</option>
-                                            <option value="MidLevelSoftwareDeveloper">Mid-level software developer</option>
-                                            <option value="SeniorSoftwareDeveloper">Senior software developer</option>
-                                            <option value="OfficeManager">Office manager</option>
-                                            <option value="TechnicalManager">Technical manager</option>
-                                        </InputSelect>
-                                    </div>
-                                </div>
-                            </div>
-
-
-                            <button class="btn btn-primary btn-lg btn-block" type="submit">Create an account</button>
-
-                            <div>
-                                <p class="mb-0">Already have an account? <NavLink href="/login" class="fw-bold">Sign In</NavLink></p>
-                            </div>
-                        </EditForm>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
-</section>
-
-@code {
-    private Account _appAccount = new();
-    private AppUser _appUser = new();
-
-
-    private void HandleValidSubmit()
-    {
-        Console.WriteLine("success");
-    }
-
-}
+﻿@* @page "/registration" *@
+@* @using TicketManager.Data *@
+@* @using TicketManager.Validator *@
+@* @inject NavigationManager _navigationManager; *@
+@* *@
+@* <h3>Registration</h3> *@
+@* *@
+@* <section class="vh-100" style="background-color: #508bfc;"> *@
+@*     <div class="container py-5 h-100"> *@
+@*         <div class="row d-flex justify-content-center align-items-center h-100"> *@
+@*             <div class="col-15 col-md-10 col-lg-8 col-xl-8"> *@
+@*                 <div class="card shadow-2-strong" style="border-radius: 1rem;"> *@
+@*                     <div class="card-body p-5 text-center"> *@
+@* *@
+@*                         <h3 class="mb-5">Sign in</h3> *@
+@* *@
+@*                         <EditForm Model="@_appUser" OnValidSubmit="@HandleValidSubmit"> *@
+@*                             <DataAnnotationsValidator/> *@
+@*                             <ValidationSummary/> *@
+@* *@
+@*                             <div class="form-group"> *@
+@*                                 <div class="cols-sm-10"> *@
+@*                                     <div class="form-outline mb-4"> *@
+@*                                         Username: *@
+@*                                         <InputText type="text" placeholder="Username" @bind-Value="_appAccount.Username"/> *@
+@*                                     </div> *@
+@*                                 </div> *@
+@*                             </div> *@
+@* *@
+@*                             <div class="form-group"> *@
+@*                                 <div class="cols-sm-10"> *@
+@*                                     <div class="form-outline mb-4"> *@
+@*                                         Password: *@
+@*                                         <InputText type="password" placeholder="Password" @bind-Value="_appAccount.Password"/> *@
+@*                                     </div> *@
+@*                                 </div> *@
+@*                             </div> *@
+@* *@
+@*                             <div class="form-group"> *@
+@*                                 <div class="cols-sm-10"> *@
+@*                                     <div class="form-outline mb-4"> *@
+@*                                         Confirm Password: *@
+@*                                         <InputText type="password" placeholder="Password" @bind-Value="_appAccount.Password"/> *@
+@*                                     </div> *@
+@*                                 </div> *@
+@*                             </div> *@
+@* *@
+@* *@
+@*                             <div class="form-group"> *@
+@*                                 <div class="cols-sm-10"> *@
+@*                                     <div class="form-outline mb-4"> *@
+@*                                         Email: *@
+@*                                         <InputText type="email" placeholder="Email" @bind-Value="_appUser.Email"/> *@
+@*                                     </div> *@
+@*                                 </div> *@
+@*                             </div> *@
+@* *@
+@*                             <div class="form-group"> *@
+@*                                 <div class="cols-sm-10"> *@
+@*                                     <div class="form-outline mb-4"> *@
+@*                                         First name: *@
+@*                                         <InputText type="text" placeholder="First name" @bind-Value="_appUser.FirstName"/> *@
+@*                                     </div> *@
+@*                                 </div> *@
+@*                             </div> *@
+@* *@
+@*                             <div class="form-group"> *@
+@*                                 <div class="cols-sm-10"> *@
+@*                                     <div class="form-outline mb-4"> *@
+@*                                         Last name: *@
+@*                                         <InputText type="text" placeholder="Last name" @bind-Value="_appUser.LastName"/> *@
+@*                                     </div> *@
+@*                                 </div> *@
+@*                             </div> *@
+@* *@
+@* *@
+@*                             <div class="form-group"> *@
+@*                                 <div class="cols-sm-10"> *@
+@*                                     <div class="form-outline mb-4"> *@
+@*                                         Job title: *@
+@*                                         <InputSelect class="form-control" type="text" placeholder="Job title" @bind-Value="_jobTitle.Name"> *@
+@*                                             <option value="">Select classification ...</option> *@
+@*                                             <option value="JuniorSoftwareDeveloper">Junior software developer</option> *@
+@*                                             <option value="MidLevelSoftwareDeveloper">Mid-level software developer</option> *@
+@*                                             <option value="SeniorSoftwareDeveloper">Senior software developer</option> *@
+@*                                             <option value="OfficeManager">Office manager</option> *@
+@*                                             <option value="TechnicalManager">Technical manager</option> *@
+@*                                         </InputSelect> *@
+@*                                     </div> *@
+@*                                 </div> *@
+@*                             </div> *@
+@* *@
+@* *@
+@*                             <button class="btn btn-primary btn-lg btn-block" type="submit">Create an account</button> *@
+@* *@
+@*                             <div> *@
+@*                                 <p class="mb-0">Already have an account? <NavLink href="/login" class="fw-bold">Sign In</NavLink></p> *@
+@*                             </div> *@
+@*                         </EditForm> *@
+@*                     </div> *@
+@*                 </div> *@
+@*             </div> *@
+@*         </div> *@
+@*     </div> *@
+@* </section> *@
+@* *@
+@* @code { *@
+@*     private Account _appAccount = new(); *@
+@*     private AppUser _appUser = new(); *@
+@*     private JobTitle _jobTitle = new(); *@
+@*     private UserValidator _validator = new(); *@
+@* *@
+@*     private void HandleValidSubmit() *@
+@*     { *@
+@*         if (_validator.IsValidUser(_appUser)) *@
+@*         { *@
+@*             Console.WriteLine("success"); *@
+@*             _navigationManager.NavigateTo("/"); *@
+@*         } *@
+@*         else *@
+@*         { *@
+@*             Console.WriteLine("Unsuccessful registration"); *@
+@*         } *@
+@*     } *@
+@* *@
+@* } *@

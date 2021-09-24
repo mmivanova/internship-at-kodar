@@ -1,8 +1,10 @@
+using TicketManager.Data;
+
 namespace TicketManager.Validator
 {
     public class UserValidator
     {
-        public bool IsValidUser()
+        public bool IsValidUser(AppUser user)
         {
             return true;
         }

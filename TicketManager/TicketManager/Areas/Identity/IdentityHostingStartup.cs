@@ -5,6 +5,7 @@ using Microsoft.AspNetCore.Identity.UI;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using TicketManager.Areas.Identity.Data;
 using TicketManager.Data;
 
 [assembly: HostingStartup(typeof(TicketManager.Areas.Identity.IdentityHostingStartup))]
@@ -19,6 +20,7 @@ namespace TicketManager.Areas.Identity
                     options.UseSqlServer(
                         context.Configuration.GetConnectionString("TicketManagerDbContextConnection")));
 
+                // changed AppUser to IdentityUser
                 services.AddDefaultIdentity<AppUser>(options => options.SignIn.RequireConfirmedAccount = true)
                     .AddEntityFrameworkStores<TicketManagerDbContext>();
             });

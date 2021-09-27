@@ -1,3 +1,4 @@
+using System;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.EntityFrameworkCore;
@@ -5,8 +6,7 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using TicketManager.Areas.Identity.Data;
-using TicketManager.Data;
-using TicketManager.Services;
+using TicketManager.Roles;
 
 namespace TicketManager
 {
@@ -25,14 +25,16 @@ namespace TicketManager
         {
             services.AddRazorPages();
             services.AddServerSideBlazor();
-          
+
             services.AddControllersWithViews().AddRazorRuntimeCompilation();
             services.AddDbContext<TicketManagerDbContext>(
-        options => options.UseSqlServer("name=ConnectionStrings:TicketManagerDbContextConnection"));
+                options => options.UseSqlServer("name=ConnectionStrings:TicketManagerDbContextConnection"));
+
+            services.AddHttpContextAccessor();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
-        public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
+        public void Configure(IApplicationBuilder app, IWebHostEnvironment env, IServiceProvider serviceProvider)
         {
             if (env.IsDevelopment())
             {
@@ -49,12 +51,16 @@ namespace TicketManager
             app.UseStaticFiles();
 
             app.UseRouting();
+            app.UseAuthorization();
+            app.UseAuthentication();
 
             app.UseEndpoints(endpoints =>
             {
                 endpoints.MapBlazorHub();
                 endpoints.MapFallbackToPage("/_Host");
             });
+
+            RolesData.SeedRoles(serviceProvider).Wait();
         }
     }
 }

@@ -8,16 +8,17 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.Extensions.Logging;
+using TicketManager.Data;
 
 namespace TicketManager.Areas.Identity.Pages.Account
 {
     [AllowAnonymous]
-    public class LoginWith2faModel : PageModel
+    public class LoginWith2FaModel : PageModel
     {
-        private readonly SignInManager<IdentityUser> _signInManager;
-        private readonly ILogger<LoginWith2faModel> _logger;
+        private readonly SignInManager<AppUser> _signInManager;
+        private readonly ILogger<LoginWith2FaModel> _logger;
 
-        public LoginWith2faModel(SignInManager<IdentityUser> signInManager, ILogger<LoginWith2faModel> logger)
+        public LoginWith2FaModel(SignInManager<AppUser> signInManager, ILogger<LoginWith2FaModel> logger)
         {
             _signInManager = signInManager;
             _logger = logger;

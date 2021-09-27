@@ -22,6 +22,7 @@ namespace TicketManager.Areas.Identity
 
                 // changed AppUser to IdentityUser
                 services.AddDefaultIdentity<AppUser>(options => options.SignIn.RequireConfirmedAccount = true)
+                    .AddRoles<IdentityRole>()
                     .AddEntityFrameworkStores<TicketManagerDbContext>();
             });
         }

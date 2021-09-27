@@ -105,6 +105,14 @@ namespace TicketManager.Areas.Identity.Pages.Account
                 {
                     _logger.LogInformation("User created a new account with password.");
 
+                    var currentUser = _userManager.FindByIdAsync(user.Id);
+                    
+                    var role = AssignRole(currentUser);
+
+                    await _userManager.AddToRoleAsync(currentUser.Result, role);
+
+                    Console.WriteLine($"User: {currentUser.Result.UserName} has role {_userManager.GetRolesAsync(currentUser.Result).Result[0]}");
+                    
                     var code = await _userManager.GenerateEmailConfirmationTokenAsync(user);
                     code = WebEncoders.Base64UrlEncode(Encoding.UTF8.GetBytes(code));
                     var callbackUrl = Url.Page(
@@ -135,6 +143,21 @@ namespace TicketManager.Areas.Identity.Pages.Account
 
             // If we got this far, something failed, redisplay form
             return Page();
+        }
+
+        private static string AssignRole(Task<AppUser> currentUser)
+        {
+            var role = currentUser.Result.JobTitleId switch
+            {
+                JobTitleId.OfficeManager => "Manager",
+                JobTitleId.TechnicalManager => "Manager",
+                JobTitleId.JuniorSoftwareDeveloper => "Developer",
+                JobTitleId.MidLevelSoftwareDeveloper => "Developer",
+                JobTitleId.SeniorSoftwareDeveloper => "Developer",
+                JobTitleId.Unknown => "",
+                _ => throw new ArgumentOutOfRangeException()
+            };
+            return role;
         }
     }
 }

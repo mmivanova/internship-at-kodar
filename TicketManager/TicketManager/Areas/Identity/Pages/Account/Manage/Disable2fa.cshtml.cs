@@ -6,17 +6,18 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.Extensions.Logging;
+using TicketManager.Data;
 
 namespace TicketManager.Areas.Identity.Pages.Account.Manage
 {
-    public class Disable2faModel : PageModel
+    public class Disable2FaModel : PageModel
     {
-        private readonly UserManager<IdentityUser> _userManager;
-        private readonly ILogger<Disable2faModel> _logger;
+        private readonly UserManager<AppUser> _userManager;
+        private readonly ILogger<Disable2FaModel> _logger;
 
-        public Disable2faModel(
-            UserManager<IdentityUser> userManager,
-            ILogger<Disable2faModel> logger)
+        public Disable2FaModel(
+            UserManager<AppUser> userManager,
+            ILogger<Disable2FaModel> logger)
         {
             _userManager = userManager;
             _logger = logger;

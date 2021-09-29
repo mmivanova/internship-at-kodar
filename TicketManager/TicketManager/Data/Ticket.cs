@@ -1,5 +1,3 @@
-using System.Drawing;
-
 namespace TicketManager.Data
 {
     public class Ticket
@@ -7,6 +5,6 @@ namespace TicketManager.Data
         public int Id { get; set; }
         public string Description { get; set; }
         public bool IsPrivate { get; set; }
-        //public Image Image { get; set; }
+        public byte[] Image { get; set; }
     }
 }

@@ -10,14 +10,14 @@ using TicketManager.Data;
 
 namespace TicketManager.Areas.Identity.Pages.Account.Manage
 {
-    public class Disable2FaModel : PageModel
+    public class Disable2faModel : PageModel
     {
         private readonly UserManager<AppUser> _userManager;
-        private readonly ILogger<Disable2FaModel> _logger;
+        private readonly ILogger<Disable2faModel> _logger;
 
-        public Disable2FaModel(
+        public Disable2faModel(
             UserManager<AppUser> userManager,
-            ILogger<Disable2FaModel> logger)
+            ILogger<Disable2faModel> logger)
         {
             _userManager = userManager;
             _logger = logger;

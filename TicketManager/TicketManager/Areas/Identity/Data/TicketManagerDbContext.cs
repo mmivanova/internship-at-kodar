@@ -55,10 +55,5 @@ namespace TicketManager.Areas.Identity.Data
             // Add your customizations after calling base.OnModelCreating(builder);
         }
 
-        protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
-        {
-            optionsBuilder.UseSqlServer("name=ConnectionStrings:TicketManagerDbContextConnection");
-        }
-
     }
 }

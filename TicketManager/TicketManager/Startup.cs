@@ -6,7 +6,10 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using TicketManager.Areas.Identity.Data;
+using TicketManager.Repositories.TicketRepository;
+using TicketManager.Repositories.UserRepository;
 using TicketManager.Roles;
+using TicketManager.Services.TicketServices;
 
 namespace TicketManager
 {
@@ -28,9 +31,15 @@ namespace TicketManager
 
             services.AddControllersWithViews().AddRazorRuntimeCompilation();
             services.AddDbContext<TicketManagerDbContext>(
-                options => options.UseSqlServer("name=ConnectionStrings:TicketManagerDbContextConnection"));
-
+                options => options.UseSqlServer("name=ConnectionStrings:Default"));
+            
             services.AddHttpContextAccessor();
+            
+            services.AddScoped<ITicketRepository, TicketRepository>();
+            services.AddScoped<ITicketService, TicketService>();
+            
+            services.AddScoped<IUserRepository, UserRepository>();
+            //services.AddScoped<IUserService, UserService>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

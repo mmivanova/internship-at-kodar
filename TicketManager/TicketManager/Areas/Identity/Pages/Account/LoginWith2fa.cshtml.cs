@@ -1,7 +1,5 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
-using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
@@ -13,12 +11,12 @@ using TicketManager.Data;
 namespace TicketManager.Areas.Identity.Pages.Account
 {
     [AllowAnonymous]
-    public class LoginWith2FaModel : PageModel
+    public class LoginWith2faModel : PageModel
     {
         private readonly SignInManager<AppUser> _signInManager;
-        private readonly ILogger<LoginWith2FaModel> _logger;
+        private readonly ILogger<LoginWith2faModel> _logger;
 
-        public LoginWith2FaModel(SignInManager<AppUser> signInManager, ILogger<LoginWith2FaModel> logger)
+        public LoginWith2faModel(SignInManager<AppUser> signInManager, ILogger<LoginWith2faModel> logger)
         {
             _signInManager = signInManager;
             _logger = logger;

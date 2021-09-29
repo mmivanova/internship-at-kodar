@@ -1,4 +1,4 @@
-﻿@page
+﻿@page "/twoFactorAuth"
 @model LoginWith2faModel
 @{
     ViewData["Title"] = "Two-factor authentication";
@@ -21,7 +21,7 @@
                 <div class="checkbox">
                     <label asp-for="Input.RememberMachine">
                         <input asp-for="Input.RememberMachine" />
-                        @Html.DisplayNameFor(m => m.Input.RememberMachine)
+                        @* @Html.DisplayNameFor(m => m.Input.RememberMachine) *@
                     </label>
                 </div>
             </div>

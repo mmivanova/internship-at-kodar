@@ -1,8 +1,7 @@
 using System;
 using TicketManager.Data;
-using TicketManager.Repositories.UserRepository;
 
-namespace TicketManager.Services
+namespace TicketManager.Services.UserServices
 {
     public class UserService
     {

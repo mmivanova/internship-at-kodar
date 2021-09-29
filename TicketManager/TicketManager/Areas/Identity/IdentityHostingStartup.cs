@@ -7,6 +7,8 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using TicketManager.Areas.Identity.Data;
 using TicketManager.Data;
+using TicketManager.Repositories.TicketRepository;
+using TicketManager.Services.TicketServices;
 
 [assembly: HostingStartup(typeof(TicketManager.Areas.Identity.IdentityHostingStartup))]
 namespace TicketManager.Areas.Identity
@@ -18,7 +20,7 @@ namespace TicketManager.Areas.Identity
             builder.ConfigureServices((context, services) => {
                 services.AddDbContext<TicketManagerDbContext>(options =>
                     options.UseSqlServer(
-                        context.Configuration.GetConnectionString("TicketManagerDbContextConnection")));
+                        context.Configuration.GetConnectionString("Default")));
 
                 // changed AppUser to IdentityUser
                 services.AddDefaultIdentity<AppUser>(options => options.SignIn.RequireConfirmedAccount = true)

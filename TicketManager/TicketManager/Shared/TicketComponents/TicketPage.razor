@@ -1,0 +1,39 @@
+@page "/ticket"
+@using TicketManager.Services.TicketServices
+@using TicketManager.Data
+@inject ITicketService _ticketService
+
+<h3>Tickets</h3>
+<br>
+<a href="ticket/add" class="btn btn-primary active" role="button">New ticket</a>
+<br>
+
+<table class="table table-striped table-hover">
+    <thead>
+    <tr>
+        <th scope="col">Code</th>
+        <th scope="col">Description</th>
+        <th scope="col">Intended for</th>
+        <th scope="col">Handle</th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr>
+        @foreach (var ticket in _tickets)
+        {
+            <th scope="row">@ticket.Id</th>
+            <td>@ticket.Description</td>
+            <td>@ticket.IsPrivate</td>
+        }
+    </tr>
+    </tbody>
+</table>
+
+@code {
+    private List<Ticket> _tickets;
+
+    protected override void OnInitialized()
+    {
+        _tickets = new List<Ticket>(_ticketService.GetAll());
+    }
+}

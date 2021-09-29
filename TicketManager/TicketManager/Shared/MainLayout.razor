@@ -1,4 +1,10 @@
+@using Microsoft.AspNetCore.Identity
+@using TicketManager.Data
+@using System.Security.Claims
+@using System.Security.Policy
 @inherits LayoutComponentBase
+@inject NavigationManager _navigationManager
+@inject SignInManager<AppUser> _signInManager
 
 <div class="page">
     <div class="sidebar">
@@ -7,8 +13,14 @@
 
     <div class="main">
         <div class="top-row px-4">
-            <NavLink href="registration">Sign Up</NavLink>
-            <NavLink href="login">Sign In</NavLink>
+            @if (_signInManager.IsSignedIn(user))
+            {
+                <a id="manage" class="nav-link" asp-area="Identity" asp-page="/Account/Manage/Index" title="Manage">Hello @user.Identity.Name!</a>
+
+                // <form id="logoutForm" class="form-inline" asp-area="Identity" asp-page="login">
+                //      <button id="logout" type="submit" class="nav-link btn btn-link">Logout</button>
+                // </form>
+            }
             <a href="https://docs.microsoft.com/aspnet/" target="_blank">About</a>
         </div>
 
@@ -17,3 +29,21 @@
         </div>
     </div>
 </div>
+
+@code{
+
+    [CascadingParameter]
+    protected Task<AuthenticationState> AuthStat { get; set; }
+
+    private ClaimsPrincipal user;
+
+    protected async override Task OnInitializedAsync()
+    {
+        base.OnInitialized();
+        user = (await AuthStat).User;
+        if (!user.Identity.IsAuthenticated)
+        {
+            _navigationManager.NavigateTo($"/login");
+        }
+    }
+}

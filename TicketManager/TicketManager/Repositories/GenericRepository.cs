@@ -33,8 +33,9 @@ namespace TicketManager.Repositories
             _context.SaveChanges();
         }
 
-        public void Update(T t)
+        public void Update(PK id)
         {
+            var t = GetById(id);
             _table.Attach(t);
             _context.Entry(t).State = EntityState.Modified;
             _context.SaveChanges();

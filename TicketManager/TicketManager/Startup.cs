@@ -6,10 +6,11 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using TicketManager.Areas.Identity.Data;
-using TicketManager.Repositories.TicketRepository;
-using TicketManager.Repositories.UserRepository;
+using TicketManager.Data;
+using TicketManager.Repositories;
 using TicketManager.Roles;
 using TicketManager.Services.TicketServices;
+using TicketManager.Services.UserServices;
 
 namespace TicketManager
 {
@@ -35,11 +36,14 @@ namespace TicketManager
             
             services.AddHttpContextAccessor();
             
-            services.AddScoped<ITicketRepository, TicketRepository>();
+            // services.AddScoped<ITicketRepository, TicketRepository>();
             services.AddScoped<ITicketService, TicketService>();
             
-            services.AddScoped<IUserRepository, UserRepository>();
-            //services.AddScoped<IUserService, UserService>();
+            // services.AddScoped<IUserRepository, UserRepository>();
+            services.AddScoped<IUserService, UserService>();
+
+            services.AddScoped(typeof(IRepository<Ticket, int>), typeof(GenericRepository<Ticket, int>));
+            services.AddScoped(typeof(IRepository<AppUser, string>), typeof(GenericRepository<AppUser, string>));
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

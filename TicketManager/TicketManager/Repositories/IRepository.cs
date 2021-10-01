@@ -8,7 +8,7 @@ namespace TicketManager.Repositories
         IEnumerable<T> GetAll();
         T GetById(PK id);
         void Create(T t);
-        void Update(T t);
+        void Update(PK id);
         void Delete(PK id);
     }
 }

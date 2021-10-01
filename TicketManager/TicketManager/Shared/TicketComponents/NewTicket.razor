@@ -1,0 +1,104 @@
+@page "/ticket/add"
+@using TicketManager.Services.TicketServices
+@using TicketManager.Data
+@using Microsoft.AspNetCore.Identity
+@using System.Security.Claims
+@inject ITicketService _ticketService
+@inject UserManager<AppUser> _userManager
+@inject NavigationManager _navigationManager
+
+<h3>Add new ticket</h3>
+<br>
+<section class="vh-100">
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-sm-8 text-black">
+
+                <EditForm Model="@_ticket" OnValidSubmit="@HandleValidSubmit">
+                    <DataAnnotationsValidator/>
+                    <ValidationSummary/>
+                    
+                    <div class="form-outline mb-4">
+                        <InputText @bind-Value="_ticket.Name" class="form-control"/>
+                        <label class="form-label">Name</label>
+                    </div>
+
+                    <div class="form-outline mb-4">
+                        <InputTextArea rows="@Rows" @bind-Value="_ticket.Description" id="form1Example1" class="form-control"/>
+                        <label class="form-label" for="form1Example1">Description (optional)</label>
+                    </div>
+
+                    <div class="form-outline mb-4">
+                        <InputSelect @bind-Value="_ticket.ReceiverId" id="form1Example2" class="form-control">
+                            <option value="TechnicalManager">Technical manager</option>
+                            <option value="OfficeManager">Office manager</option>
+                        </InputSelect>
+                    </div>
+
+                    <div class="mb-4">
+                        <div class="form-check">
+                            <Input
+                                class="form-check-input"
+                                type="checkbox"
+                                value=""
+                                id="form1Example3"
+                                @onchange="eventArgs => { CheckboxClicked(eventArgs.Value); }"/>
+                            <label class="form-check-label" for="form1Example3"> Private </label>
+                        </div>
+                    </div>
+
+                    <button @onclick="x => { GoToTicketsPage(); }" type="submit" class="btn btn-primary btn-block">Create</button>
+                </EditForm>
+
+            </div>
+
+        </div>
+        <div class="col-sm-6 px-0 d-none d-sm-block"></div>
+    </div>
+</section>
+
+
+@code {
+
+        private const int Rows = 10;
+    readonly Ticket _ticket = new();
+
+    [CascadingParameter]
+    protected Task<AuthenticationState> AuthStat { get; set; }
+
+    private ClaimsPrincipal _user;
+
+    protected override async Task OnInitializedAsync()
+    {
+        await base.OnInitializedAsync();
+        _user = (await AuthStat).User;
+        if (!_user.Identity.IsAuthenticated)
+        {
+            _navigationManager.NavigateTo($"/login");
+        }
+    }
+
+    private void HandleValidSubmit()
+    {
+        _ticket.AppUserId = _userManager.GetUserAsync(_user).Result.Id;
+        _ticketService.Create(_ticket);
+    }
+
+    void CheckboxClicked(object checkedValue)
+    {
+        if ((bool) checkedValue)
+        {
+            _ticket.IsPrivate = true;
+        }
+        else
+        {
+            _ticket.IsPrivate = false;
+        }
+    }
+
+    private void GoToTicketsPage()
+    {
+        _navigationManager.NavigateTo($"/tickets");
+    }
+
+}

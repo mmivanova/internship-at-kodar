@@ -1,0 +1,41 @@
+@using Microsoft.AspNetCore.Identity
+@using TicketManager.Data
+@using System.Security.Claims
+@inject SignInManager<AppUser> _signInManager
+@inject NavigationManager _navigationManager
+
+
+@if (_signInManager.IsSignedIn(_user))
+{
+    <a id="manage" class="nav-link" asp-area="Identity" asp-page="/Account/Manage/Index" title="Manage">Hello @_user.Identity.Name!</a>
+
+    <form asp-area="Identity" asp-page="/Account/Manage/login" class="form-inline" id="logoutForm">
+        <a href="logout" id="logout" type="submit" class="nav-link btn btn-link">Log out</a>
+    </form>
+}
+<a href="https://docs.microsoft.com/aspnet/" target="_blank">About</a>
+
+
+@code {
+
+    [CascadingParameter]
+    protected Task<AuthenticationState> AuthStat { get; set; }
+
+    private ClaimsPrincipal _user;
+
+    protected override async Task OnInitializedAsync()
+    {
+        await base.OnInitializedAsync();
+        _user = (await AuthStat).User;
+        if (!_user.Identity.IsAuthenticated)
+        {
+            _navigationManager.NavigateTo($"/login");
+        }
+    }
+
+    private async void LogOut()
+    {
+        await _signInManager.SignOutAsync();
+    }
+
+}

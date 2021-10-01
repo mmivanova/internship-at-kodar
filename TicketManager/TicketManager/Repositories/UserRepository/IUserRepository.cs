@@ -3,7 +3,7 @@ using TicketManager.Data;
 
 namespace TicketManager.Repositories.UserRepository
 {
-    public interface IUserRepository : IRepository<AppUser, int>
+    public interface IUserRepository : IRepository<AppUser, string>
     {
 
     }

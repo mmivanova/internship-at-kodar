@@ -7,6 +7,6 @@ namespace TicketManager.Data
         MidLevelSoftwareDeveloper = 2,
         SeniorSoftwareDeveloper = 3,
         OfficeManager = 4,
-        TechnicalManager = 5,
+        TechnicalManager = 5
     }
 }

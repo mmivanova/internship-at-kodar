@@ -1,41 +1,20 @@
 using System.Collections.Generic;
+using System.Linq;
 using TicketManager.Data;
-using TicketManager.Repositories.TicketRepository;
+using TicketManager.Repositories;
 
 namespace TicketManager.Services.TicketServices
 {
-    public class TicketService : ITicketService
+    public class TicketService : GenericService<Ticket, int>, ITicketService
     {
-        private readonly ITicketRepository _repository;
-
-        public TicketService(ITicketRepository repository)
+        public TicketService(IRepository<Ticket, int> repository) : base(repository)
         {
-            _repository = repository;
-        }
-        
-        public IEnumerable<Ticket> GetAll()
-        {
-            return _repository.GetAll();
         }
 
-        public Ticket GetById(int id)
+        public IEnumerable<Ticket> GetTicketsByUser(AppUser user)
         {
-            throw new System.NotImplementedException();
-        }
-
-        public void Create(Ticket ticket)
-        {
-            _repository.Create(ticket);
-        }
-
-        public void Update(int id)
-        {
-            throw new System.NotImplementedException();
-        }
-
-        public void Delete(int id)
-        {
-            throw new System.NotImplementedException();
+            var ticketsByUser = GetAll().Where(t => t.AppUserId.Equals(user.Id));
+            return ticketsByUser;
         }
     }
 }

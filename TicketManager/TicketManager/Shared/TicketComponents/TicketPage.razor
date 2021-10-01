@@ -1,39 +1,66 @@
-@page "/ticket"
+@page "/tickets"
 @using TicketManager.Services.TicketServices
 @using TicketManager.Data
+@using Microsoft.AspNetCore.Identity
+@using Microsoft.AspNetCore.Http
+
 @inject ITicketService _ticketService
+@inject UserManager<AppUser> _userManager
+@inject NavigationManager _navigationManager
+@inject IHttpContextAccessor _contextAccessor
 
 <h3>Tickets</h3>
 <br>
 <a href="ticket/add" class="btn btn-primary active" role="button">New ticket</a>
+<br>
 <br>
 
 <table class="table table-striped table-hover">
     <thead>
     <tr>
         <th scope="col">Code</th>
-        <th scope="col">Description</th>
+        <th scope="col">Name</th>
         <th scope="col">Intended for</th>
-        <th scope="col">Handle</th>
     </tr>
     </thead>
     <tbody>
-    <tr>
-        @foreach (var ticket in _tickets)
-        {
+
+    @foreach (var ticket in _tickets)
+    {
+        <tr @onclick="() => OpenDetailedTicketPage(ticket.Id)">
             <th scope="row">@ticket.Id</th>
-            <td>@ticket.Description</td>
-            <td>@ticket.IsPrivate</td>
-        }
-    </tr>
+            <td>@ticket.Name</td>
+            <td>@ticket.ReceiverId.ToString()</td>
+            <AuthorizeView Roles="Administrator">
+                <td>
+                    <button type="button" @onclick="() => OpenDetailedTicketPage(ticket.Id)">Delete</button>
+                </td>
+            </AuthorizeView>
+        </tr>
+    }
     </tbody>
 </table>
 
 @code {
-    private List<Ticket> _tickets;
+    private IEnumerable<Ticket> _tickets;
+    private AppUser user;
 
     protected override void OnInitialized()
     {
-        _tickets = new List<Ticket>(_ticketService.GetAll());
+        user = _userManager.GetUserAsync(_contextAccessor.HttpContext.User).Result;
+        _tickets = _ticketService.GetTicketsByUser(user);
     }
+
+    private void DeleteTicket(int id)
+    {
+        _ticketService.Delete(id);
+        _navigationManager.NavigateTo("/tickets", true);
+    }
+
+    private void OpenDetailedTicketPage(int id)
+    {
+        var ticket = _ticketService.GetById(id);
+        _navigationManager.NavigateTo($"/ticket/{id}", true);
+    }
+    
 }

@@ -19,16 +19,17 @@
                     <ValidationSummary/>
                     
                     <div class="form-outline mb-4">
-                        <InputText @bind-Value="_ticket.Name" class="form-control"/>
                         <label class="form-label">Name</label>
+                        <InputText @bind-Value="_ticket.Name" class="form-control"/>
                     </div>
 
                     <div class="form-outline mb-4">
+                         <label class="form-label" for="form1Example1">Description (optional)</label>
                         <InputTextArea rows="@Rows" @bind-Value="_ticket.Description" id="form1Example1" class="form-control"/>
-                        <label class="form-label" for="form1Example1">Description (optional)</label>
                     </div>
 
                     <div class="form-outline mb-4">
+                         <label class="form-label" for="form1Example1">Who is this ticket for</label>
                         <InputSelect @bind-Value="_ticket.ReceiverId" id="form1Example2" class="form-control">
                             <option value="TechnicalManager">Technical manager</option>
                             <option value="OfficeManager">Office manager</option>
@@ -47,7 +48,7 @@
                         </div>
                     </div>
 
-                    <button @onclick="x => { GoToTicketsPage(); }" type="submit" class="btn btn-primary btn-block">Create</button>
+                    <button  type="submit" class="btn btn-primary btn-block">Create</button>
                 </EditForm>
 
             </div>
@@ -82,6 +83,7 @@
     {
         _ticket.AppUserId = _userManager.GetUserAsync(_user).Result.Id;
         _ticketService.Create(_ticket);
+        _navigationManager.NavigateTo($"/tickets");
     }
 
     void CheckboxClicked(object checkedValue)
@@ -95,10 +97,4 @@
             _ticket.IsPrivate = false;
         }
     }
-
-    private void GoToTicketsPage()
-    {
-        _navigationManager.NavigateTo($"/tickets");
-    }
-
 }

@@ -11,7 +11,9 @@
 
 <h3>Tickets</h3>
 <br>
-<a href="ticket/add" class="btn btn-primary active" role="button">New ticket</a>
+<AuthorizeView Roles="Administrator, Developer">
+    <a href="ticket/add" class="btn btn-primary active" role="button">New ticket</a>
+</AuthorizeView>
 <br>
 <br>
 
@@ -27,13 +29,16 @@
 
     @foreach (var ticket in _tickets)
     {
-        <tr @onclick="() => OpenDetailedTicketPage(ticket.Id)">
+        <tr>
             <th scope="row">@ticket.Id</th>
             <td>@ticket.Name</td>
             <td>@ticket.ReceiverId.ToString()</td>
+            <td>
+                <button type="button" @onclick="() => OpenDetailedTicketPage(ticket.Id)">Open ticket</button>
+            </td>
             <AuthorizeView Roles="Administrator">
                 <td>
-                    <button type="button" @onclick="() => OpenDetailedTicketPage(ticket.Id)">Delete</button>
+                    <button type="button" @onclick="() => DeleteTicket(ticket.Id)">Delete</button>
                 </td>
             </AuthorizeView>
         </tr>
@@ -48,7 +53,7 @@
     protected override void OnInitialized()
     {
         user = _userManager.GetUserAsync(_contextAccessor.HttpContext.User).Result;
-        _tickets = _ticketService.GetTicketsByUser(user);
+        _tickets = _ticketService.GetTicketsForUser(user);
     }
 
     private void DeleteTicket(int id)
@@ -62,5 +67,5 @@
         var ticket = _ticketService.GetById(id);
         _navigationManager.NavigateTo($"/ticket/{id}", true);
     }
-    
+
 }

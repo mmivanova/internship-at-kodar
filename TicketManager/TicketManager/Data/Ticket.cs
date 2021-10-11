@@ -15,6 +15,7 @@ namespace TicketManager.Data
         [ForeignKey("Id")]
         public string AppUserId { get; set; }
         
+        [Required]
         [EnumDataType(typeof(ReceiverId))]
         public ReceiverId ReceiverId { get; set; }
     }

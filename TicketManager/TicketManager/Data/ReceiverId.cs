@@ -2,7 +2,7 @@ namespace TicketManager.Data
 {
     public enum ReceiverId
     {
-        TechnicalManager = 0,
-        OfficeManager = 1
+        OfficeManager = 4,
+        TechnicalManager = 5
     }
 }

@@ -1,7 +1,5 @@
-using System;
 using System.Collections.Generic;
 using System.Linq;
-using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using TicketManager.Areas.Identity.Data;
 using TicketManager.Data;
@@ -17,18 +15,7 @@ namespace TicketManager.Repositories.TicketRepository
             _context = context;
         }
 
-        public IEnumerable<Ticket> GetTicketsByUser(AppUser user)
-        {
-            var test = _context.Tickets
-                .FromSqlRaw(@$"select Id, Description, IsPrivate, Image, ReceiverId, AppUserId, Name
-                                from [dbo].[Tickets] 
-                                where AppUserId = '{user.Id}'")
-                .ToList();
-
-            return test;
-        }
-
-        public IEnumerable<Ticket> GetInitialTickets(AppUser user)
+        public IEnumerable<Ticket> GetDevelopersTickets(AppUser user)
         {
             var tickets = _context
                 .Tickets
@@ -44,21 +31,15 @@ namespace TicketManager.Repositories.TicketRepository
             return tickets;
         }
 
-        public IEnumerable<Ticket> GetOfficeManagersTickets()
+        public IEnumerable<Ticket> GetManagersTickets(int roleId)
         {
+            //TODO ValidateId(roleId);
+            
             var tickets = _context
                 .Tickets
-                .Where(t => t.ReceiverId.Equals(4))
-                .ToList();
-
-            return tickets;
-        }
-
-        public IEnumerable<Ticket> GetTechnicalManagersTickets()
-        {
-            var tickets = _context
-                .Tickets
-                .Where(t => t.ReceiverId.Equals(5))
+                .FromSqlRaw(@$"select Id, Description, IsPrivate, Image, ReceiverId, AppUserId, Name
+                                from [dbo].[Tickets] 
+                                where ReceiverId = {roleId}")
                 .ToList();
 
             return tickets;

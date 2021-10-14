@@ -17,6 +17,7 @@ namespace TicketManager.Areas.Identity.Data
         public DbSet<Ticket> Tickets { get; set; }
         public DbSet<JobTitle> JobTitles { get; set; }
         public DbSet<Receiver> Receivers { get; set; }
+        public DbSet<Message> Messages { get; set; }
 
 
         protected override void OnModelCreating(ModelBuilder builder)
@@ -64,6 +65,14 @@ namespace TicketManager.Areas.Identity.Data
                         Title = jt.ToString()
                     })
             );
+            
+            builder
+                .Entity<Message>()
+                .HasKey(pk => pk.Id);
+            
+            builder.Entity<Ticket>()
+                .HasMany(t => t.Messages)
+                .WithOne();
             
             // Customize the ASP.NET Identity model and override the defaults if needed.
             // For example, you can rename the ASP.NET Identity table names and more.

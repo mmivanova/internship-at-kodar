@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using System.Drawing;
 using Microsoft.AspNetCore.Identity;
 using TicketManager.Data;
 
@@ -6,9 +7,8 @@ namespace TicketManager.Services.TicketServices
 {
     public interface ITicketService : IService<Ticket, int>
     {
-        IEnumerable<Ticket> GetTicketsByUser(AppUser user);
         IEnumerable<Ticket> GetTicketsForUser(AppUser user);
-
-        IEnumerable<Ticket> GetTicketsByUserRole(IdentityRole role);
+        Image ConvertByteArrayToImage(byte[] byteArray);
+        byte[] ConvertImageToByteArray(Image image);
     }
 }

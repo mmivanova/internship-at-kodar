@@ -6,9 +6,7 @@ namespace TicketManager.Repositories.TicketRepository
 {
     public interface ITicketRepository : IRepository<Ticket, int>
     {
-        IEnumerable<Ticket> GetTicketsByUser(AppUser user);
-        IEnumerable<Ticket> GetInitialTickets(AppUser user);
-        IEnumerable<Ticket> GetOfficeManagersTickets();
-        IEnumerable<Ticket> GetTechnicalManagersTickets();
+        IEnumerable<Ticket> GetDevelopersTickets(AppUser user);
+        IEnumerable<Ticket> GetManagersTickets(int roleId);
     }
 }

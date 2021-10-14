@@ -1,9 +1,12 @@
 using System;
 using System.Collections.Generic;
+using System.Drawing;
+using System.Drawing.Imaging;
+using System.IO;
 using System.Linq;
-using Microsoft.AspNetCore.Identity;
 using TicketManager.Data;
 using TicketManager.Repositories.TicketRepository;
+using static System.Drawing.Image;
 
 namespace TicketManager.Services.TicketServices
 {
@@ -16,17 +19,6 @@ namespace TicketManager.Services.TicketServices
             _repository = repository;
         }
 
-        public IEnumerable<Ticket> GetTicketsByUser(AppUser user)
-        {
-            var ticketsByUser = _repository.GetTicketsByUser(user);
-            return ticketsByUser;
-        }
-
-        public IEnumerable<Ticket> GetTicketsByUserRole(IdentityRole role)
-        {
-            throw new NotImplementedException();
-        }
-
         public IEnumerable<Ticket> GetTicketsForUser(AppUser user)
         {
             List<Ticket> tickets;
@@ -36,21 +28,31 @@ namespace TicketManager.Services.TicketServices
                 tickets = GetAll().ToList();
                 return tickets;
             }
-            
-            tickets = _repository.GetInitialTickets(user).ToList();
 
-            if (user.JobTitleId.Equals(4))
+            tickets = user.JobTitleId switch
             {
-                tickets.AddRange(_repository.GetOfficeManagersTickets());
-            }
-            else if (user.JobTitleId.Equals(5))
-            {
-                tickets.AddRange(_repository.GetTechnicalManagersTickets());
-            }
+                JobTitleId.OfficeManager => _repository.GetManagersTickets(4).ToList(),
+                JobTitleId.TechnicalManager => _repository.GetManagersTickets(5).ToList(),
+                _ => _repository.GetDevelopersTickets(user).ToList()
+            };
 
             return tickets;
         }
 
+        public Image ConvertByteArrayToImage(byte[] byteArray)
+        {
+            using var ms = new MemoryStream(byteArray);
+            var returnImage = new ImageConverter().ConvertFrom(byteArray) as Image;
+            return returnImage;
+        }
+        
+        public byte[] ConvertImageToByteArray(Image image)
+        {
+            using var ms = new MemoryStream();
+            image.Save(ms, image.RawFormat);
+            return ms.ToArray();
+        }
+        
         public override Ticket GetById(int id)
         {
             var ticket = base.GetById(id);

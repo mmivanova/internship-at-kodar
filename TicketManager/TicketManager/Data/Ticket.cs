@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
@@ -12,11 +13,13 @@ namespace TicketManager.Data
         
         public byte[] Image { get; set; }
 
-        [ForeignKey("Id")]
+        [ForeignKey("Id")] 
         public string AppUserId { get; set; }
-        
+
         [Required]
         [EnumDataType(typeof(ReceiverId))]
         public ReceiverId ReceiverId { get; set; }
+
+        public List<Message> Messages { get; set; }
     }
 }

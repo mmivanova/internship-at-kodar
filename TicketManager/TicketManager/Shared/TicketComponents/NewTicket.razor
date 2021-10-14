@@ -3,6 +3,7 @@
 @using TicketManager.Data
 @using Microsoft.AspNetCore.Identity
 @using System.Security.Claims
+@using System.IO
 @inject ITicketService _ticketService
 @inject UserManager<AppUser> _userManager
 @inject NavigationManager _navigationManager
@@ -17,23 +18,30 @@
                 <EditForm Model="@_ticket" OnValidSubmit="@HandleValidSubmit">
                     <DataAnnotationsValidator/>
                     <ValidationSummary/>
-                    
+
                     <div class="form-outline mb-4">
                         <label class="form-label">Name</label>
                         <InputText @bind-Value="_ticket.Name" class="form-control"/>
                     </div>
 
                     <div class="form-outline mb-4">
-                         <label class="form-label" for="form1Example1">Description (optional)</label>
+                        <label class="form-label" for="form1Example1">Description (optional)</label>
                         <InputTextArea rows="@Rows" @bind-Value="_ticket.Description" id="form1Example1" class="form-control"/>
                     </div>
 
                     <div class="form-outline mb-4">
-                         <label class="form-label" for="form1Example1">Who is this ticket for</label>
+                        <label class="form-label" for="form1Example1">Who is this ticket for</label>
                         <InputSelect @bind-Value="_ticket.ReceiverId" id="form1Example2" class="form-control">
                             <option value="TechnicalManager">Technical manager</option>
                             <option value="OfficeManager">Office manager</option>
                         </InputSelect>
+                    </div>
+
+                    <div class="form-outline mb-4">
+                        <form >
+                            <InputFile OnChange="@LoadFiles" class="btn btn-primary" accept=".jpg,.jpeg,.gif"/>
+                            <br/>
+                        </form>
                     </div>
 
                     <div class="mb-4">
@@ -48,7 +56,7 @@
                         </div>
                     </div>
 
-                    <button  type="submit" class="btn btn-primary btn-block">Create</button>
+                    <button type="submit" class="btn btn-primary btn-block">Create</button>
                 </EditForm>
 
             </div>
@@ -60,9 +68,10 @@
 
 
 @code {
-
-        private const int Rows = 10;
+    
+    private const int Rows = 10;
     readonly Ticket _ticket = new();
+    readonly Message message = new();
 
     [CascadingParameter]
     protected Task<AuthenticationState> AuthStat { get; set; }
@@ -73,7 +82,7 @@
     {
         await base.OnInitializedAsync();
         _user = (await AuthStat).User;
-        if (!_user.Identity.IsAuthenticated)
+        if (_user.Identity is {IsAuthenticated: false })
         {
             _navigationManager.NavigateTo($"/login");
         }
@@ -86,6 +95,13 @@
         _navigationManager.NavigateTo($"/tickets");
     }
 
+    private async void LoadFiles(InputFileChangeEventArgs e)
+    {
+        await using var memoryStream = new MemoryStream();
+        await e.File.OpenReadStream().CopyToAsync(memoryStream);
+        _ticket.Image = memoryStream.ToArray();
+    }
+    
     void CheckboxClicked(object checkedValue)
     {
         if ((bool) checkedValue)

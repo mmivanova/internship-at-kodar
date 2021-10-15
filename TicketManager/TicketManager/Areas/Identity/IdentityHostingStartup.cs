@@ -1,16 +1,13 @@
-﻿using System;
-using Microsoft.AspNetCore.Hosting;
+﻿using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Identity;
-using Microsoft.AspNetCore.Identity.UI;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using TicketManager.Areas.Identity;
 using TicketManager.Areas.Identity.Data;
 using TicketManager.Data;
-using TicketManager.Repositories.TicketRepository;
-using TicketManager.Services.TicketServices;
 
-[assembly: HostingStartup(typeof(TicketManager.Areas.Identity.IdentityHostingStartup))]
+[assembly: HostingStartup(typeof(IdentityHostingStartup))]
 namespace TicketManager.Areas.Identity
 {
     public class IdentityHostingStartup : IHostingStartup

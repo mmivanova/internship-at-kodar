@@ -1,4 +1,5 @@
 using System;
+using Blazored.Modal;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.EntityFrameworkCore;
@@ -6,10 +7,12 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using TicketManager.Areas.Identity.Data;
+using TicketManager.Repositories.MessageRepository;
 using TicketManager.Repositories.TicketRepository;
 using TicketManager.Repositories.UserRepository;
 using TicketManager.Roles;
-using TicketManager.Services.TicketServices;
+using TicketManager.Services.MessageService;
+using TicketManager.Services.TicketService;
 using TicketManager.Services.UserServices;
 
 namespace TicketManager
@@ -29,6 +32,7 @@ namespace TicketManager
         {
             services.AddRazorPages();
             services.AddServerSideBlazor();
+            services.AddBlazoredModal();
 
             services.AddControllersWithViews().AddRazorRuntimeCompilation();
             services.AddDbContext<TicketManagerDbContext>(
@@ -41,6 +45,9 @@ namespace TicketManager
             
             services.AddScoped<IUserRepository, UserRepository>();
             services.AddScoped<IUserService, UserService>();
+
+            services.AddScoped<IMessageRepository, MessageRepository>();
+            services.AddScoped<IMessageService, MessageService>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

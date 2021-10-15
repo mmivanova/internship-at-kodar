@@ -1,9 +1,10 @@
 @page "/ticket/add"
-@using TicketManager.Services.TicketServices
+@using TicketManager.Services.TicketService
 @using TicketManager.Data
 @using Microsoft.AspNetCore.Identity
 @using System.Security.Claims
 @using System.IO
+
 @inject ITicketService _ticketService
 @inject UserManager<AppUser> _userManager
 @inject NavigationManager _navigationManager

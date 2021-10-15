@@ -1,111 +1,142 @@
 @page "/ticket/{Id:int}"
+@using TicketManager.Services.TicketService
+@using TicketManager.Services.MessageService
 @using TicketManager.Data
-@using TicketManager.Services.TicketServices
-@using System.Drawing
+@using Microsoft.AspNetCore.Identity
+@using System.Security.Claims
+@using System.IO
 
 @inject ITicketService _ticketService
+@inject IMessageService _messageService
 @inject NavigationManager _navigationManager
+@inject IModalService _modal
+@inject UserManager<AppUser> _userManager
+
 <h3>Ticket @Id</h3>
-
-<section class="vh-65">
-    <div class="container-fluid">
-        <div class="row">
-            <div class="col-sm-8 text-black">
-                <div class="form-outline mb-4">
-                    <label class="form-label">Name</label>
-                    <text readonly class="form-control">@_ticket.Name</text>
-                </div>
-
-                <div class="form-outline mb-4">
-                    <label class="form-label" for="form1Example1">Description</label>
-                    <textarea readonly rows="@Rows" id="form1Example1" class="form-control">@_ticket.Description</textarea >
-                </div>
-                
-                <div class="form-outline mb-4">
-                    <img src="data:image;base64,@Convert.ToBase64String(_ticket.Image)" alt="" width="500" height="600"/>
-                </div>
-
-                <div class="form-outline mb-4">
-                    <label class="form-label">Receiver</label>
-                    <text readonly class="form-control">@_ticket.ReceiverId.ToString()</text>
-                </div>
-            </div>
-
-        </div>
-        <div class="col-sm-6 px-0 d-none d-sm-block"></div>
-    </div>
-</section>
 <br>
+<div class="container-fluid">
+    <div class="row">
+        <div class="col-xl">
+            <section class="vh-65">
+                <div class="container-fluid">
+                    <div class="row">
+                        <div class="col-sm-8 text-black">
+                            <div class="form-outline mb-4">
+                                <label class="form-label">Name</label>
+                                <text readonly class="form-control">@_ticket.Name</text>
+                            </div>
 
-<section style="background-color: #eee;">
-    <div class="container my-5 py-5">
-        @* <div class="row d-flex justify-content-center"> *@
-        <div class="col-md-12 col-lg-10 col-xl-8">
-            <div class="card ">
-                <div class="card-body vh-50 ">
-                    <div class="d-flex flex-start align-items-center">
-                        <div>
-                            <h6 class="fw-bold text-primary mb-1">Lily Coleman</h6>
+                            <div class="form-outline mb-4">
+                                <label class="form-label" for="form1Example1">Description</label>
+                                <textarea readonly rows="@Rows" id="form1Example1" class="form-control">@_ticket.Description</textarea >
+                            </div>
+
+                            @if (_ticket.Image != null)
+                            {
+                                <div class="form-outline mb-4">
+                                    <img src="data:image;base64,@Convert.ToBase64String(_ticket.Image)" alt="" width="150" height="200" @onclick="@(() => ShowModal(_ticket.Image))"/>
+                                </div>
+                            }
+
+
+                            <div class="form-outline mb-4">
+                                <label class="form-label">Receiver</label>
+                                <text readonly class="form-control">@_ticket.ReceiverId.ToString()</text>
+                            </div>
+                        </div>
+
+                    </div>
+                    <div class="col-sm-6 px-0 d-none d-sm-block"></div>
+                </div>
+            </section>
+        </div>
+        <div class="col-md">
+            <section style="background-color: #eee;">
+                <div class="container my-2 py-2">
+                    <div class="col-md-17 col-lg-15 col-xl-13">
+                        <div class="card ">
+                            <div class="card-body vh-50 ">
+                                <div class="d-flex flex-start align-items-center">
+                                    <div>
+                                        <h6 class="fw-bold text-primary mb-1">Lily Coleman</h6>
+                                    </div>
+                                </div>
+
+                                <p class="mt-3 mb-4 pb-2">
+                                    Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod
+                                    tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam,
+                                    quis nostrud exercitation ullamco laboris nisi ut aliquip consequat.
+                                </p>
+                            </div>
+                            <div class="card-footer py-3 border-0" style="background-color: #f8f9fa;">
+                                <div class="d-flex flex-start w-100">
+                                    <div class="form-outline w-100">
+                                        <EditForm Model="@_message">
+                                            <label class="form-label">New comment</label>
+                                            <InputTextArea @bind-Value="_message.Content" class="form-control" id="textAreaExample" rows="4" style="background: #fff;"></InputTextArea>
+                                        </EditForm>
+                                    </div>
+                                </div>
+                                <div class="float-end mt-2 pt-1">
+                                    <button @onclick="AddMessage" type="button" class="btn btn-primary btn-sm">Post comment</button>
+                                    <InputFile OnChange="@LoadFiles" type="button" class="btn btn-primary btn-sm" accept=".jpg,.jpeg,.gif"/>
+                                    <button type="button" class="btn btn-outline-primary btn-sm">Cancel</button>
+                                </div>
+                            </div>
                         </div>
                     </div>
-
-                    <p class="mt-3 mb-4 pb-2">
-                        Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod
-                        tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam,
-                        quis nostrud exercitation ullamco laboris nisi ut aliquip consequat.
-                    </p>
                 </div>
-                <div class="card-footer py-3 border-0" style="background-color: #f8f9fa;">
-                    <div class="d-flex flex-start w-100">
-                        <div class="form-outline w-100">
-                            <label class="form-label">New comment</label>
-                            <textarea class="form-control" id="textAreaExample" rows="4" style="background: #fff;"></textarea>
-                        </div>
-                    </div>
-                    <div class="float-end mt-2 pt-1">
-                        <button type="button" class="btn btn-primary btn-sm">Post comment</button>
-                        <button type="button" class="btn btn-outline-primary btn-sm">Cancel</button>
-                    </div>
-                </div>
-            </div>
+            </section>
         </div>
     </div>
-    @* </div> *@
-</section>
-
+</div>
 
 @code {
 
     [Parameter]
     public int Id { get; set; }
 
+    [CascadingParameter]
+    protected Task<AuthenticationState> AuthStat { get; set; }
+
         private const int Rows = 10;
     private Ticket _ticket;
-    private byte[] _image;
+    private Message _message;
+    private ClaimsPrincipal _user;
 
-    protected override void OnInitialized()
+    protected override async Task OnInitializedAsync()
     {
-        base.OnInitialized();
+        await base.OnInitializedAsync();
+        _user = (await AuthStat).User;
         if (_ticketService.GetById(Id) == null)
         {
             _navigationManager.NavigateTo("/tickets", true);
         }
         _ticket = _ticketService.GetById(Id);
-        _image = _ticket.Image;
+        _message = new Message();
     }
 
-    private Image GetImage()
+    private void ShowModal(byte[] image)
     {
-        Image image;
-        if (_image.Length > 0)
-        {
-            image = _ticketService.ConvertByteArrayToImage(_ticket.Image);
-        }
-        else
-        {
-            throw new InvalidOperationException("Cannot convert byte to image!");
-        }
-        return image;
+        var parameters = new ModalParameters();
+        parameters.Add(nameof(TicketImage.Image), image);
+
+        _modal.Show<TicketImage>("Image", parameters);
     }
-    
+
+    private async void LoadFiles(InputFileChangeEventArgs e)
+    {
+        await using var memoryStream = new MemoryStream();
+        await e.File.OpenReadStream().CopyToAsync(memoryStream);
+        _message.Image = memoryStream.ToArray();
+    }
+
+    private void AddMessage()
+    {
+        _message.DateCreated = DateTime.Now;
+        _message.TicketId = _ticket.Id;
+        _message.AppUserId = _userManager.GetUserAsync(_user).Result.Id;
+        _messageService.Create(_message);
+    }
+
 }

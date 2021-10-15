@@ -3,7 +3,7 @@ using System.Drawing;
 using Microsoft.AspNetCore.Identity;
 using TicketManager.Data;
 
-namespace TicketManager.Services.TicketServices
+namespace TicketManager.Services.TicketService
 {
     public interface ITicketService : IService<Ticket, int>
     {

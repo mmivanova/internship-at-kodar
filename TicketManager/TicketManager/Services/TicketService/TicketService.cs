@@ -1,14 +1,12 @@
 using System;
 using System.Collections.Generic;
 using System.Drawing;
-using System.Drawing.Imaging;
 using System.IO;
 using System.Linq;
 using TicketManager.Data;
 using TicketManager.Repositories.TicketRepository;
-using static System.Drawing.Image;
 
-namespace TicketManager.Services.TicketServices
+namespace TicketManager.Services.TicketService
 {
     public class TicketService : GenericService<Ticket, int>, ITicketService
     {

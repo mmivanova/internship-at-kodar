@@ -4,7 +4,7 @@ namespace TicketManager.Data
 {
     public class Message
     {
-        public int Id { get; set; }
+        public int Id { get; }
         public string AppUserId { get; set; }
         public string Content { get; set; }
         public DateTime DateCreated { get; set; }

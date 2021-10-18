@@ -72,8 +72,7 @@
     
     private const int Rows = 10;
     readonly Ticket _ticket = new();
-    readonly Message message = new();
-
+    
     [CascadingParameter]
     protected Task<AuthenticationState> AuthStat { get; set; }
 

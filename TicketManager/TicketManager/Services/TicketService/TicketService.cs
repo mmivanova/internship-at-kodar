@@ -37,20 +37,6 @@ namespace TicketManager.Services.TicketService
             return tickets;
         }
 
-        public Image ConvertByteArrayToImage(byte[] byteArray)
-        {
-            using var ms = new MemoryStream(byteArray);
-            var returnImage = new ImageConverter().ConvertFrom(byteArray) as Image;
-            return returnImage;
-        }
-        
-        public byte[] ConvertImageToByteArray(Image image)
-        {
-            using var ms = new MemoryStream();
-            image.Save(ms, image.RawFormat);
-            return ms.ToArray();
-        }
-        
         public override Ticket GetById(int id)
         {
             var ticket = base.GetById(id);

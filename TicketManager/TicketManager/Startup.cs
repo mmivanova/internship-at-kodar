@@ -13,7 +13,7 @@ using TicketManager.Repositories.UserRepository;
 using TicketManager.Roles;
 using TicketManager.Services.MessageService;
 using TicketManager.Services.TicketService;
-using TicketManager.Services.UserServices;
+using TicketManager.Services.UserService;
 
 namespace TicketManager
 {

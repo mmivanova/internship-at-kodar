@@ -4,6 +4,7 @@
 @using TicketManager.Data
 @using Microsoft.AspNetCore.Identity
 @using System.Security.Claims
+@using System.Collections
 @using System.IO
 
 @inject ITicketService _ticketService
@@ -11,6 +12,16 @@
 @inject NavigationManager _navigationManager
 @inject IModalService _modal
 @inject UserManager<AppUser> _userManager
+
+<style>
+    .chat{
+        display: flex;
+        flex-direction: column;
+    }
+    .is-sent {
+      align-self: flex-end;
+    }
+</style>
 
 <h3>Ticket @Id</h3>
 <br>
@@ -51,42 +62,58 @@
             </section>
         </div>
         <div class="col-md">
-            <section style="background-color: #eee;">
-                <div class="container my-2 py-2">
+            <h4>Comments</h4>
+            <section style="background-color: #eee; max-height: 60vh; overflow-y: auto;">
+                <div class="container my-2 py-2 ">
                     <div class="col-md-17 col-lg-15 col-xl-13">
-                        <div class="card ">
-                            <div class="card-body vh-50 ">
-                                <div class="d-flex flex-start align-items-center">
-                                    <div>
-                                        <h6 class="fw-bold text-primary mb-1">Lily Coleman</h6>
+                        <div class="card chat">
+                            @foreach (var message in GetMessages())
+                            {
+                                @if (_userManager.GetUserAsync(_user).Result.Id.Equals(message.AppUserId))
+                                {
+                                    _messageState = "is-sent";
+                                }
+                                <div class="card-body vh-50 @_messageState">
+                                    <div class="d-flex  align-items-center">
+                                        <div>
+                                            <h6 class="fw-bold text-primary mb-1"><strong>@message.Name</strong> (@message.DateCreated)</h6>
+                                        </div>
                                     </div>
-                                </div>
 
-                                <p class="mt-3 mb-4 pb-2">
-                                    Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod
-                                    tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam,
-                                    quis nostrud exercitation ullamco laboris nisi ut aliquip consequat.
-                                </p>
-                            </div>
-                            <div class="card-footer py-3 border-0" style="background-color: #f8f9fa;">
-                                <div class="d-flex flex-start w-100">
-                                    <div class="form-outline w-100">
-                                        <EditForm Model="@_message">
-                                            <label class="form-label">New comment</label>
-                                            <InputTextArea @bind-Value="_message.Content" class="form-control" id="textAreaExample" rows="4" style="background: #fff;"></InputTextArea>
-                                        </EditForm>
-                                    </div>
+                                    <p class="mt-3 mb-4 pb-2">@message.Content</p>
+                                    @if (message.Image != null)
+                                    {
+                                        <div class="form-outline mb-4">
+                                            <img src="data:image;base64,@Convert.ToBase64String(message.Image)" alt="" width="150" height="200" @onclick="@(() => ShowModal(message.Image))"/>
+                                        </div>
+                                    }
                                 </div>
-                                <div class="float-end mt-2 pt-1">
-                                    <button @onclick="AddMessage" type="button" class="btn btn-primary btn-sm">Post comment</button>
-                                    <InputFile OnChange="@LoadFiles" type="button" class="btn btn-primary btn-sm" accept=".jpg,.jpeg,.gif"/>
-                                    <button type="button" class="btn btn-outline-primary btn-sm">Cancel</button>
-                                </div>
-                            </div>
+                                ResetMessageState();
+                            }
                         </div>
                     </div>
                 </div>
             </section>
+            <section>
+                <EditForm Model="@_message" OnValidSubmit="@HandleValidSubmit">
+                    <div class="card-footer py-3 border-0" style="background-color: #f8f9fa;">
+                        <div class="d-flex flex-start w-100">
+                            <div class="form-outline w-100">
+                                <form>
+                                    <label class="form-label">New comment</label>
+                                    <InputTextArea @bind-Value="_message.Content" class="form-control" id="textAreaExample" rows="4" style="background: #fff;"></InputTextArea>
+                                </form>
+                            </div>
+                        </div>
+                        <div class="float-end mt-2 pt-1">
+                            <button type="submit" class="btn btn-primary btn-sm">Post comment</button>
+                            <InputFile OnChange="@LoadFiles" type="button" class="btn btn-primary btn-sm" accept=".jpg,.jpeg,.gif"/>
+                            <button @onclick="CancelComment" type="button" class="btn btn-outline-primary btn-sm">Cancel</button>
+                        </div>
+                    </div>
+                </EditForm>
+            </section>
+
         </div>
     </div>
 </div>
@@ -103,6 +130,7 @@
     private Ticket _ticket;
     private Message _message;
     private ClaimsPrincipal _user;
+    private string _messageState = "is-sent";
 
     protected override async Task OnInitializedAsync()
     {
@@ -116,7 +144,21 @@
         _message = new Message();
     }
 
-    private void ShowModal(byte[] image)
+    private void HandleValidSubmit()
+    {
+        AddNewComment();
+        _message = new Message();
+    }
+
+    private void AddNewComment()
+    {
+        _message.DateCreated = DateTime.Now;
+        _message.TicketId = _ticket.Id;
+        _message.AppUserId = _userManager.GetUserAsync(_user).Result.Id;
+        _messageService.Create(_message);
+    }
+
+    private void ShowModal(IEnumerable image)
     {
         var parameters = new ModalParameters();
         parameters.Add(nameof(TicketImage.Image), image);
@@ -131,12 +173,30 @@
         _message.Image = memoryStream.ToArray();
     }
 
-    private void AddMessage()
+    private void CancelComment()
     {
-        _message.DateCreated = DateTime.Now;
-        _message.TicketId = _ticket.Id;
-        _message.AppUserId = _userManager.GetUserAsync(_user).Result.Id;
-        _messageService.Create(_message);
+        _message = new Message();
     }
 
+    private IEnumerable<dynamic> GetMessages()
+    {
+        var messages = new List<dynamic>();
+        foreach (var message in _messageService.GetMessagesByTicketId(_ticket.Id))
+        {
+            messages.Add(new
+            {
+                message.AppUserId,
+                Name = _messageService.GetMessageAuthor(message.Id),
+                message.Content,
+                message.DateCreated,
+                message.Image
+            });
+        }
+        return messages;
+    }
+
+    private void ResetMessageState()
+    {
+        _messageState = string.Empty;
+    }
 }

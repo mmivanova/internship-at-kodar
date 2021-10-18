@@ -1,10 +1,8 @@
-using Microsoft.AspNetCore.Identity;
 using TicketManager.Data;
 
-namespace TicketManager.Services.UserServices
+namespace TicketManager.Services.UserService
 {
     public interface IUserService : IService<AppUser, string>
     {
-        IdentityRole GetUserRole(AppUser user);
     }
 }

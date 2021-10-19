@@ -27,7 +27,7 @@
     {
         await base.OnInitializedAsync();
         _user = (await AuthStat).User;
-        if (!_user.Identity.IsAuthenticated)
+        if (_user.Identity is {IsAuthenticated: false })
         {
             _navigationManager.NavigateTo($"/login");
         }

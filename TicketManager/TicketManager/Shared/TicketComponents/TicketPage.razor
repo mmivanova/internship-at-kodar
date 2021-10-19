@@ -48,12 +48,12 @@
 
 @code {
     private IEnumerable<Ticket> _tickets;
-    private AppUser user;
+    private AppUser _user;
 
     protected override void OnInitialized()
     {
-        user = _userManager.GetUserAsync(_contextAccessor.HttpContext.User).Result;
-        _tickets = _ticketService.GetTicketsForUser(user);
+        if (_contextAccessor.HttpContext != null) _user = _userManager.GetUserAsync(_contextAccessor.HttpContext.User).Result;
+        _tickets = _ticketService.GetTicketsForUser(_user);
     }
 
     private void DeleteTicket(int id)

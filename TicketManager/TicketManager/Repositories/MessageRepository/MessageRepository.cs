@@ -1,8 +1,10 @@
 using System.Collections.Generic;
 using System.Linq;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using TicketManager.Areas.Identity.Data;
 using TicketManager.Data;
+using TicketManager.Dtos;
 
 namespace TicketManager.Repositories.MessageRepository
 {
@@ -15,34 +17,29 @@ namespace TicketManager.Repositories.MessageRepository
             _context = context;
         }
 
-        public IEnumerable<Message> GetMessagesByTicketId(int ticketId)
+        public IEnumerable<MessageDto> GetMessagesByTicketId(int ticketId)
         {
             var messages = _context
                 .Messages
-                .FromSqlRaw(@$"select Id, AppUserId, Content, DateCreated, Image, TicketId
-                                from [dbo].[Messages] 
-                                where TicketId = '{ticketId}'")
-                .ToList();
+                .Where(m => m.TicketId.Equals(ticketId))
+                .Join(
+                    _context.AppUsers,
+                    message => message.AppUserId,
+                    user => user.Id,
+                    (message, user) => new MessageDto()
+                    {
+                        Id = message.Id,
+                        AppUserId = message.AppUserId, 
+                        Content = message.Content, 
+                        Image = message.Image, 
+                        AuthorName = string.Concat(user.FirstName, " ", user.LastName),
+                        DateCreated = message.DateCreated
+                    })
+                .OrderBy(m => m.DateCreated);
 
-            return messages;
-        }
+            var sql = messages.ToQueryString();
 
-        public string GetMessageAuthor(int messageId)
-        {
-            var name = _context
-                .AppUsers
-                .FromSqlRaw($@"select u.FirstName, u.LastName
-                               from [dbo].[Messages] m
-                               inner join [dbo].[AspNetUsers] u
-                               on m.AppUserId = u.Id
-                               where m.Id = {messageId}")
-                .Select(user => new
-                {
-                    Name = $"{user.FirstName} {user.LastName}"
-                })
-                .First();
-
-            return name.Name;
-        }
+            return messages.ToList();
+        } 
     }
 }

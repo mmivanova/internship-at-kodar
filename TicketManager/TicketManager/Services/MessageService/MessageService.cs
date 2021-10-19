@@ -1,5 +1,6 @@
 using System.Collections.Generic;
 using TicketManager.Data;
+using TicketManager.Dtos;
 using TicketManager.Repositories.MessageRepository;
 
 namespace TicketManager.Services.MessageService
@@ -12,14 +13,9 @@ namespace TicketManager.Services.MessageService
             _repository = repository;
         }
 
-        public IEnumerable<Message> GetMessagesByTicketId(int ticketId)
+        public IEnumerable<MessageDto> GetMessagesByTicketId(int ticketId)
         {
             return _repository.GetMessagesByTicketId(ticketId);
-        }
-
-        public string GetMessageAuthor(int messageId)
-        {
-            return _repository.GetMessageAuthor(messageId);
         }
     }
 }

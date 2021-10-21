@@ -7,29 +7,26 @@ using TicketManager.Areas.Identity.Data;
 
 namespace TicketManager.Roles
 {
-    public class RolesData
+    public static class RolesData
     {
         private static readonly string[] Roles = { "Administrator", "Manager", "Developer" };
 
         public static async Task SeedRoles(IServiceProvider serviceProvider)
         {
-            using (var serviceScope = serviceProvider.GetRequiredService<IServiceScopeFactory>().CreateScope())
-            {
-                var dbContext = serviceScope.ServiceProvider.GetService<TicketManagerDbContext>();
+            using var serviceScope = serviceProvider.GetRequiredService<IServiceScopeFactory>().CreateScope();
+            var dbContext = serviceScope.ServiceProvider.GetService<TicketManagerDbContext>();
 
-                if (!dbContext.UserRoles.Any())
-                {
-                    var roleManager = serviceProvider.GetRequiredService<RoleManager<IdentityRole>>();
+            if (dbContext != null && !dbContext.UserRoles.Any())
+            {
+                var roleManager = serviceProvider.GetRequiredService<RoleManager<IdentityRole>>();
                     
-                    foreach (var role in Roles.Where(r=> r != "Administrator"))
+                foreach (var role in Roles.Where(r=> r != "Administrator"))
+                {
+                    if (!await roleManager.RoleExistsAsync(role))
                     {
-                        if (!await roleManager.RoleExistsAsync(role))
-                        {
-                            await roleManager.CreateAsync(new IdentityRole(role));
-                        }
+                        await roleManager.CreateAsync(new IdentityRole(role));
                     }
                 }
-
             }
         }
     }

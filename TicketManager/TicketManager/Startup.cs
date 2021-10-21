@@ -7,11 +7,11 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using TicketManager.Areas.Identity.Data;
-using TicketManager.Repositories.MessageRepository;
+using TicketManager.Repositories.CommentRepository;
 using TicketManager.Repositories.TicketRepository;
 using TicketManager.Repositories.UserRepository;
 using TicketManager.Roles;
-using TicketManager.Services.MessageService;
+using TicketManager.Services.CommentService;
 using TicketManager.Services.TicketService;
 using TicketManager.Services.UserService;
 
@@ -46,8 +46,8 @@ namespace TicketManager
             services.AddScoped<IUserRepository, UserRepository>();
             services.AddScoped<IUserService, UserService>();
 
-            services.AddScoped<IMessageRepository, MessageRepository>();
-            services.AddScoped<IMessageService, MessageService>();
+            services.AddScoped<ICommentRepository, CommentRepository>();
+            services.AddScoped<ICommentService, CommentService>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

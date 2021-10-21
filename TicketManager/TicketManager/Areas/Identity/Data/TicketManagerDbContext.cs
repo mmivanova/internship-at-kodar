@@ -17,7 +17,7 @@ namespace TicketManager.Areas.Identity.Data
         public DbSet<Ticket> Tickets { get; set; }
         public DbSet<JobTitle> JobTitles { get; set; }
         public DbSet<Receiver> Receivers { get; set; }
-        public DbSet<Message> Messages { get; set; }
+        public DbSet<Comment> Comments { get; set; }
 
 
         protected override void OnModelCreating(ModelBuilder builder)
@@ -67,7 +67,7 @@ namespace TicketManager.Areas.Identity.Data
             );
             
             builder
-                .Entity<Message>()
+                .Entity<Comment>()
                 .HasKey(pk => pk.Id);
             
             builder.Entity<Ticket>()

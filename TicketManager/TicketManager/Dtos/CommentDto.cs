@@ -2,7 +2,7 @@ using System;
 
 namespace TicketManager.Dtos
 {
-    public class MessageDto
+    public class CommentDto
     {
         public int  Id { get; set; }
         public byte[] Image { get; set; }

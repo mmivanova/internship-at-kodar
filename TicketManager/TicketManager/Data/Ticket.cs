@@ -20,6 +20,6 @@ namespace TicketManager.Data
         [EnumDataType(typeof(ReceiverId))]
         public ReceiverId ReceiverId { get; set; }
 
-        public List<Message> Messages { get; set; }
+        public List<Comment> Messages { get; set; }
     }
 }

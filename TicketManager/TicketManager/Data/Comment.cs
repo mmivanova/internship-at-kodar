@@ -2,7 +2,7 @@ using System;
 
 namespace TicketManager.Data
 {
-    public class Message
+    public class Comment
     {
         public int Id { get; }
         public string AppUserId { get; set; }

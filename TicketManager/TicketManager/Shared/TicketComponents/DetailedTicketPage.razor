@@ -1,21 +1,21 @@
 @page "/ticket/{Id:int}"
 @using TicketManager.Services.TicketService
-@using TicketManager.Services.MessageService
 @using TicketManager.Data
 @using Microsoft.AspNetCore.Identity
 @using System.Security.Claims
 @using System.Collections
 @using System.IO
 @using TicketManager.Dtos
+@using TicketManager.ErrorHandlingComponents.CommentErrorHandlers
+@using TicketManager.Services.CommentService
 
 @inject ITicketService _ticketService
-@inject IMessageService _messageService
+@inject ICommentService _commentService
 @inject NavigationManager _navigationManager
 @inject IModalService _modal
 @inject UserManager<AppUser> _userManager
 
 <h3>Ticket @Id</h3>
-<br>
 <div class="container-fluid">
     <div class="row">
         <div class="col-xl">
@@ -27,7 +27,6 @@
                                 <label class="form-label">Name</label>
                                 <text readonly class="form-control">@_ticket.Name</text>
                             </div>
-
                             <div class="form-outline mb-4">
                                 <label class="form-label" for="form1Example1">Description</label>
                                 <textarea readonly rows="@Rows" id="form1Example1" class="form-control">@_ticket.Description</textarea >
@@ -39,13 +38,11 @@
                                     <img src="data:image;base64,@Convert.ToBase64String(_ticket.Image)" alt="" width="150" height="200" @onclick="@(() => ShowImage(_ticket.Image))"/>
                                 </div>
                             }
-
                             <div class="form-outline mb-4">
                                 <label class="form-label">Receiver</label>
                                 <text readonly class="form-control">@_ticket.ReceiverId.ToString()</text>
                             </div>
                         </div>
-
                     </div>
                     <div class="col-sm-6 px-0 d-none d-sm-block"></div>
                 </div>
@@ -53,10 +50,9 @@
         </div>
         <div class="col-md">
             <h4>Comments</h4>
-            <section style="background-color: #eee; max-height: 60vh; overflow-y: auto;">
+            <section style="background-color: #eee; max-height: 55vh; overflow-y: auto;">
                 <div class="container my-2 py-2 ">
                     <div class="col-md-17 col-lg-15 col-xl-13">
-
                         @foreach (var message in GetMessages())
                         {
                             @if (_userManager.GetUserAsync(_user).Result.Id.Equals(message.AppUserId))
@@ -83,16 +79,16 @@
                 </div>
             </section>
             <section>
-                <EditForm Model="@_message" OnValidSubmit="@HandleValidSubmit">
+                <EditForm Model="@_comment" OnValidSubmit="@HandleValidSubmit">
                     <DataAnnotationsValidator/>
                     <ValidationSummary/>
-                    
+
                     <div class="card-footer py-3 border-0" style="background-color: #f8f9fa;">
                         <div class="d-flex flex-start w-100">
                             <div class="form-outline w-100">
                                 <form>
                                     <label class="form-label">New comment</label>
-                                    <InputTextArea @bind-Value="_message.Content" class="form-control" id="textAreaExample" rows="4" style="background: #fff;"></InputTextArea>
+                                    <InputTextArea @bind-Value="_comment.Content" class="form-control" id="textAreaExample" rows="4" style="background: #fff;"></InputTextArea>
                                 </form>
                             </div>
                         </div>
@@ -104,7 +100,6 @@
                     </div>
                 </EditForm>
             </section>
-
         </div>
     </div>
 </div>
@@ -117,9 +112,9 @@
     [CascadingParameter]
     protected Task<AuthenticationState> AuthStat { get; set; }
 
-    private const int Rows = 10;
+        private const int Rows = 10;
     private Ticket _ticket;
-    private Message _message;
+    private Comment _comment;
     private ClaimsPrincipal _user;
     private string _messageState = "text-md-left";
 
@@ -132,21 +127,35 @@
             _navigationManager.NavigateTo("/tickets", true);
         }
         _ticket = _ticketService.GetById(Id);
-        _message = new Message();
+        _comment = new Comment();
     }
 
     private void HandleValidSubmit()
     {
-        AddNewComment();
-        _message = new Message();
+        try
+        {
+            AddNewComment();
+            _comment = new Comment();
+        }
+        catch (Exception e)
+        {
+            if (string.IsNullOrEmpty(_comment.Content))
+            {
+                var comment = $"Please, enter a comment!";
+                var parameters = new ModalParameters();
+                parameters.Add(nameof(CommentErrorComponent.Message), comment);
+
+                _modal.Show<CommentErrorComponent>("Error occured!", parameters);
+            }
+        }
     }
 
     private void AddNewComment()
     {
-        _message.DateCreated = DateTime.Now;
-        _message.TicketId = _ticket.Id;
-        _message.AppUserId = _userManager.GetUserAsync(_user).Result.Id;
-        _messageService.Create(_message);
+        _comment.DateCreated = DateTime.Now;
+        _comment.TicketId = _ticket.Id;
+        _comment.AppUserId = _userManager.GetUserAsync(_user).Result.Id;
+        _commentService.Create(_comment);
     }
 
     private void ShowImage(IEnumerable image)
@@ -161,21 +170,22 @@
     {
         await using var memoryStream = new MemoryStream();
         await e.File.OpenReadStream().CopyToAsync(memoryStream);
-        _message.Image = memoryStream.ToArray();
+        _comment.Image = memoryStream.ToArray();
     }
 
     private void CancelComment()
     {
-        _message = new Message();
+        _comment = new Comment();
     }
 
-    private IEnumerable<MessageDto> GetMessages()
+    private IEnumerable<CommentDto> GetMessages()
     {
-        return _messageService.GetMessagesByTicketId(_ticket.Id);
+        return _commentService.GetCommentsByTicketId(_ticket.Id);
     }
 
     private void ResetMessageState()
     {
         _messageState = string.Empty;
     }
+
 }

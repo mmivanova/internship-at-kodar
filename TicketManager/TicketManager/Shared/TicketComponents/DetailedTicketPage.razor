@@ -80,20 +80,15 @@
             </section>
             <section>
                 <EditForm Model="@_comment" OnValidSubmit="@HandleValidSubmit">
-                    <DataAnnotationsValidator/>
-                    <ValidationSummary/>
-
                     <div class="card-footer py-3 border-0" style="background-color: #f8f9fa;">
                         <div class="d-flex flex-start w-100">
                             <div class="form-outline w-100">
-                                <form>
-                                    <label class="form-label">New comment</label>
-                                    <InputTextArea @bind-Value="_comment.Content" class="form-control" id="textAreaExample" rows="4" style="background: #fff;"></InputTextArea>
-                                </form>
+                                <label class="form-label">New comment</label>
+                                    <InputTextArea @bind-Value="_comment.Content" class="form-control" id="textAreaExample" rows="4"></InputTextArea>
                             </div>
                         </div>
                         <div class="float-end mt-2 pt-1">
-                            <button type="submit" class="btn btn-primary btn-sm">Post comment</button>
+                            <button type="submit" class="btn btn-primary btn-md">Post comment</button>
                             <InputFile OnChange="@LoadFiles" type="button" class="btn btn-primary btn-sm" accept=".jpg,.jpeg,.gif"/>
                             <button @onclick="CancelComment" type="button" class="btn btn-outline-primary btn-sm">Cancel</button>
                         </div>
@@ -112,7 +107,7 @@
     [CascadingParameter]
     protected Task<AuthenticationState> AuthStat { get; set; }
 
-        private const int Rows = 10;
+    private const int Rows = 10;
     private Ticket _ticket;
     private Comment _comment;
     private ClaimsPrincipal _user;
@@ -131,7 +126,7 @@
     }
 
     private void HandleValidSubmit()
-    {
+    { 
         try
         {
             AddNewComment();
@@ -144,7 +139,7 @@
                 var comment = $"Please, enter a comment!";
                 var parameters = new ModalParameters();
                 parameters.Add(nameof(CommentErrorComponent.Message), comment);
-
+        
                 _modal.Show<CommentErrorComponent>("Error occured!", parameters);
             }
         }

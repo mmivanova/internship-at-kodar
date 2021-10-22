@@ -71,7 +71,7 @@ namespace TicketManager.Areas.Identity.Data
                 .HasKey(pk => pk.Id);
             
             builder.Entity<Ticket>()
-                .HasMany(t => t.Messages)
+                .HasMany(t => t.Comments)
                 .WithOne();
             
             // Customize the ASP.NET Identity model and override the defaults if needed.

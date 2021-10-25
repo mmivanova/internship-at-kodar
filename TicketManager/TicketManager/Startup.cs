@@ -11,7 +11,7 @@ using TicketManager.Core.Mappers.CommentMapper;
 using TicketManager.Core.Services.CommentService;
 using TicketManager.Core.Services.TicketService;
 using TicketManager.Core.Services.UserService;
-using TicketManager.Infrastructure.Areas.Identity.Data;
+using TicketManager.Infrastructure.Data;
 using TicketManager.Infrastructure.Domain.Entities;
 using TicketManager.Infrastructure.Repositories.CommentRepository;
 using TicketManager.Infrastructure.Repositories.TicketRepository;
@@ -53,10 +53,6 @@ namespace TicketManager
 
             services.AddScoped<ICommentRepository, CommentRepository>();
             services.AddScoped<ICommentService, CommentService>();
-            
-            services.AddDefaultIdentity<AppUser>(options => options.SignIn.RequireConfirmedAccount = true)
-                .AddRoles<IdentityRole>()
-                .AddEntityFrameworkStores<TicketManagerDbContext>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

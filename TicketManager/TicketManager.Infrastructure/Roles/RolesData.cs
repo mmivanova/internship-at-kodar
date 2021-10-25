@@ -3,7 +3,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.Extensions.DependencyInjection;
-using TicketManager.Infrastructure.Areas.Identity.Data;
+using TicketManager.Infrastructure.Data;
 
 namespace TicketManager.Infrastructure.Roles
 {

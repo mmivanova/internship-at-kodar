@@ -1,8 +1,8 @@
 using System.Collections.Generic;
 using System.Linq;
 using Microsoft.EntityFrameworkCore;
-using TicketManager.Infrastructure.Areas.Identity.Data;
 using TicketManager.Infrastructure.Domain.Entities;
+using TicketManager.Infrastructure.Data;
 
 namespace TicketManager.Infrastructure.Repositories.CommentRepository
 {

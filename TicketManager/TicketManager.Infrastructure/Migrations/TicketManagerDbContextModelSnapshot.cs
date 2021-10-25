@@ -4,7 +4,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
-using TicketManager.Infrastructure.Areas.Identity.Data;
+using TicketManager.Infrastructure.Data;
 
 namespace TicketManager.Infrastructure.Migrations
 {

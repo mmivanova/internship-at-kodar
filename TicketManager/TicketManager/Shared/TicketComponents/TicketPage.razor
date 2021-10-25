@@ -1,9 +1,9 @@
 @page "/"
 @page "/tickets"
-@using TicketManager.Data
-@using TicketManager.Services.TicketService
 @using Microsoft.AspNetCore.Identity
 @using Microsoft.AspNetCore.Http
+@using TicketManager.Core.Services.TicketService
+@using TicketManager.Infrastructure.Domain.Entities
 
 @inject ITicketService _ticketService
 @inject UserManager<AppUser> _userManager

@@ -2,18 +2,21 @@ using System;
 using Blazored.Modal;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
-using TicketManager.Areas.Identity.Data;
-using TicketManager.Repositories.CommentRepository;
-using TicketManager.Repositories.TicketRepository;
-using TicketManager.Repositories.UserRepository;
-using TicketManager.Roles;
-using TicketManager.Services.CommentService;
-using TicketManager.Services.TicketService;
-using TicketManager.Services.UserService;
+using TicketManager.Core.Mappers.CommentMapper;
+using TicketManager.Core.Services.CommentService;
+using TicketManager.Core.Services.TicketService;
+using TicketManager.Core.Services.UserService;
+using TicketManager.Infrastructure.Areas.Identity.Data;
+using TicketManager.Infrastructure.Domain.Entities;
+using TicketManager.Infrastructure.Repositories.CommentRepository;
+using TicketManager.Infrastructure.Repositories.TicketRepository;
+using TicketManager.Infrastructure.Repositories.UserRepository;
+using TicketManager.Infrastructure.Roles;
 
 namespace TicketManager
 {
@@ -39,6 +42,8 @@ namespace TicketManager
                 options => options.UseSqlServer("name=ConnectionStrings:Default"));
             
             services.AddHttpContextAccessor();
+
+            services.AddScoped<ICommentMapper, CommentMapper>();
             
             services.AddScoped<ITicketRepository, TicketRepository>();
             services.AddScoped<ITicketService, TicketService>();
@@ -48,6 +53,10 @@ namespace TicketManager
 
             services.AddScoped<ICommentRepository, CommentRepository>();
             services.AddScoped<ICommentService, CommentService>();
+            
+            services.AddDefaultIdentity<AppUser>(options => options.SignIn.RequireConfirmedAccount = true)
+                .AddRoles<IdentityRole>()
+                .AddEntityFrameworkStores<TicketManagerDbContext>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

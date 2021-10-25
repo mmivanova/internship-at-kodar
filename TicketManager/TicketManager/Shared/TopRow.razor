@@ -1,6 +1,6 @@
 @using Microsoft.AspNetCore.Identity
-@using TicketManager.Data
 @using System.Security.Claims
+@using TicketManager.Infrastructure.Domain.Entities
 @inject SignInManager<AppUser> _signInManager
 @inject NavigationManager _navigationManager
 
@@ -10,7 +10,7 @@
     <a id="manage" class="nav-link" asp-area="Identity" asp-page="/Account/Manage/Index" title="Manage">Hello @_user.Identity.Name!</a>
 
     <form asp-area="Identity" asp-page="/Account/Manage/login" class="form-inline" id="logoutForm">
-        <a href="logout" id="logout" type="submit" class="nav-link btn btn-link">Log out</a>
+        <a href="" id="logout" type="submit" class="nav-link btn btn-link">Log out</a>
     </form>
 }
 <a href="https://docs.microsoft.com/aspnet/" target="_blank">About</a>
@@ -33,9 +33,9 @@
         }
     }
 
-    private async void LogOut()
+    private async Task LogOut()
     {
         await _signInManager.SignOutAsync();
+        _navigationManager.NavigateTo($"/login");
     }
-
 }

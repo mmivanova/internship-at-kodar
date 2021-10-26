@@ -50,7 +50,7 @@
         </div>
         <div class="col-md">
             <h4>Comments</h4>
-            <section style="background-color: #eee; max-height: 55vh; overflow-y: auto;">
+            <section id="chat-area" style="background-color: #eee; max-height: 55vh; overflow-y: auto;">
                 <div class="container my-2 py-2 ">
                     <div class="col-md-17 col-lg-15 col-xl-13">
                         @foreach (var message in GetMessages())
@@ -84,7 +84,7 @@
                         <div class="d-flex flex-start w-100">
                             <div class="form-outline w-100">
                                 <label class="form-label">New comment</label>
-                                    <InputTextArea @bind-Value="_comment.Content" class="form-control" id="textAreaExample" rows="4"></InputTextArea>
+                                <InputTextArea @bind-Value="_comment.Content" class="form-control" id="textAreaExample" rows="4"></InputTextArea>
                             </div>
                         </div>
                         <div class="float-end mt-2 pt-1">
@@ -132,7 +132,7 @@
             AddNewComment();
             _comment = new Comment();
         }
-        catch (Exception e)
+        catch (Exception)
         {
             if (string.IsNullOrEmpty(_comment.Content))
             {

@@ -39,7 +39,7 @@ namespace TicketManager.Core.Services.TicketService
         {
             var ticket = base.GetById(id);
             if (ticket != null) return ticket;
-            Console.WriteLine("Ticket is null");
+            Console.WriteLine("There is no such ticket! Sorry for the inconvenience!");
             return null;
         }
     }

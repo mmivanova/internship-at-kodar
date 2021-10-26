@@ -3,11 +3,13 @@
 @using System.Security.Claims
 @using System.IO
 @using TicketManager.Core.Services.TicketService
+@using TicketManager.ErrorHandlingComponents.CommentErrorHandlers
 @using TicketManager.Infrastructure.Domain.Entities
 
 @inject ITicketService _ticketService
 @inject UserManager<AppUser> _userManager
 @inject NavigationManager _navigationManager
+@inject IModalService _modal
 
 <h3>Add new ticket</h3>
 <br>
@@ -69,10 +71,10 @@
 
 
 @code {
-    
-    private const int Rows = 10;
+
+        private const int Rows = 10;
     readonly Ticket _ticket = new();
-    
+
     [CascadingParameter]
     protected Task<AuthenticationState> AuthStat { get; set; }
 
@@ -97,11 +99,26 @@
 
     private async void LoadFiles(InputFileChangeEventArgs e)
     {
-        await using var memoryStream = new MemoryStream();
-        await e.File.OpenReadStream().CopyToAsync(memoryStream);
-        _ticket.Image = memoryStream.ToArray();
+        try
+        {
+            await using var memoryStream = new MemoryStream();
+            await e.File.OpenReadStream().CopyToAsync(memoryStream);
+            _ticket.Image = memoryStream.ToArray();
+        }
+        catch (Exception exception)
+        {
+            Console.WriteLine(exception);
+            if (e.File.Size >= 512000)
+            {
+                var errorMessage = $"This image is too big to be attached! Please, select smaller one!";
+                var parameters = new ModalParameters();
+                parameters.Add(nameof(CommentErrorComponent.Message), errorMessage);
+        
+                _modal.Show<CommentErrorComponent>("Error occured!", parameters);
+            }
+        }
     }
-    
+
     void CheckboxClicked(object checkedValue)
     {
         if ((bool) checkedValue)
@@ -113,4 +130,5 @@
             _ticket.IsPrivate = false;
         }
     }
+
 }
